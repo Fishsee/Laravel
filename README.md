@@ -86,4 +86,3 @@ if ($x === 5) {
 - Constants: UPPERCASE
 - Properties and Variables: camelCase (Laravel tends to use snake_case for database fields)
 
-
