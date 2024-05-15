@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Console\Commands; // Add the namespace declaration
+
 use Illuminate\Console\Command;
 
 class UpdateAquariumData extends Command
@@ -42,4 +45,3 @@ class UpdateAquariumData extends Command
         return 0;
     }
 }
-
