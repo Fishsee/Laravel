@@ -14,7 +14,22 @@ return new class extends Migration
         Schema::create('aquarium_data', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->json('json_data'); // Column to store JSON data
         });
+
+        // Your JSON data
+        $jsonData = [
+            'PH-Waarde' => '7',
+            'Troebelheid' => '50',
+            'Stroming' => '40',
+            'Waterlevel' => '80',
+
+        ];
+
+        // Insert JSON data into the table
+        \DB::table('aquarium_data')->insert([
+            'json_data' => json_encode($jsonData, JSON_UNESCAPED_UNICODE)
+        ]);
     }
 
     /**
@@ -25,3 +40,4 @@ return new class extends Migration
         Schema::dropIfExists('aquarium_data');
     }
 };
+
