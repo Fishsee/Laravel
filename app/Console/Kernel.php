@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // Define your scheduled tasks here
-        $schedule->command('update:aquarium-data')->everyTenMinutes();
+        $schedule->command('update:aquarium-data')->everyMinute();
     }
 
     /**

@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Console\Commands; // Add the namespace declaration
+namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class UpdateAquariumData extends Command
 {
@@ -18,7 +20,7 @@ class UpdateAquariumData extends Command
      *
      * @var string
      */
-    protected $description = 'Update aquarium data every 10 minutes';
+    protected $description = 'Create new aquarium data record every 10 minutes';
 
     /**
      * Execute the console command.
@@ -27,21 +29,32 @@ class UpdateAquariumData extends Command
      */
     public function handle()
     {
-        // Generate random values for JSON data
-        $jsonData = [
-            'PH-Waarde' => rand(1, 14), // Random pH value between 1 and 14
-            'Troebelheid' => rand(0, 100), // Random troebelheid value between 0 and 100
-            'Stroming' => rand(0, 100), // Random stroming value between 0 and 100
-            'Waterlevel' => rand(0, 100), // Random waterlevel value between 0 and 100
-        ];
+        try {
+            // Generate random values and insert directly into columns
+            DB::table('aquarium_data')->insert([
+                'PH_Waarde' => $this->generateRandomPhValue(), // Random pH value between 1 and 14
+                'Troebelheid' => rand(0, 100), // Random troebelheid value between 0 and 100
+                'Stroming' => rand(0, 100), // Random stroming value between 0 and 100
+                'Waterlevel' => rand(0, 100), // Random water level value between 0 and 100
+                'created_at' => now(), // Ensure you have a timestamp for the creation
+                'updated_at' => now()  // This might be optional depending on your table schema
+            ]);
+            $this->info('New aquarium data record created successfully.');
+        } catch (Exception $e) {
+            $this->error('Failed to insert data: ' . $e->getMessage());
+            return 1; // Non-zero return code indicates failure
+        }
 
-        // Update the existing record in the database
-        \DB::table('aquarium_data')->update([
-            'json_data' => json_encode($jsonData, JSON_UNESCAPED_UNICODE)
-        ]);
+        return 0; // Success
+    }
 
-        $this->info('Aquarium data updated successfully.');
-
-        return 0;
+    /**
+     * Generate a random pH value between 1 and 14 with two decimal places
+     *
+     * @return float
+     */
+    protected function generateRandomPhValue()
+    {
+        return round(1 + mt_rand() / mt_getrandmax() * (14 - 1), 2);
     }
 }

@@ -6,7 +6,13 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\UpdateAquariumData' => $baseDir . '/app/Console/Commands/UpdateAquariumData.php',
+    'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
+    'App\\Http\\Controllers\\AquariumDataController' => $baseDir . '/app/Http/Controllers/AquariumDataController.php',
+    'App\\Http\\Controllers\\AuthController' => $baseDir . '/app/Http/Controllers/AuthController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
+    'App\\Http\\Middleware\\VerifyCsrfTokenApi' => $baseDir . '/app/Http/Middleware/VerifyCsrfTokenApi.php',
     'App\\Models\\Aquarium' => $baseDir . '/app/Models/Aquarium.php',
     'App\\Models\\AquariumData' => $baseDir . '/app/Models/AquariumData.php',
     'App\\Models\\Fish' => $baseDir . '/app/Models/Fish.php',
