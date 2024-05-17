@@ -18,4 +18,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/userdata', [AuthController::class, 'userdata']);
 });
 Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'user']);
+
+// Routes for PH data
+Route::get('/all-PH', [AquariumDataController::class, 'getAllPH']);
+Route::get('/last-PH', [AquariumDataController::class, 'getLatestPH']);
+
+// Routes for turbidity data
+Route::get('/all-troebelheid', [AquariumDataController::class, 'getAllTroebelheid']);
+Route::get('/last-troebelheid', [AquariumDataController::class, 'getLatestTroebelheid']);
+
+// Routes for current data
+Route::get('/all-stroming', [AquariumDataController::class, 'getAllStroming']);
+Route::get('/last-stroming', [AquariumDataController::class, 'getLatestStroming']);
+
+// Routes for water level data
+Route::get('/all-waterlevel', [AquariumDataController::class, 'getAllWaterLevel']);
+Route::get('/last-waterlevel', [AquariumDataController::class, 'getLatestWaterLevel']);
+
+
 ?>
