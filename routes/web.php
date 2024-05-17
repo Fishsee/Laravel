@@ -9,6 +9,5 @@ Route::get('/', function () {
 });
 
 
-Route::get('/all-PH', [AquariumDataController::class, 'getAllPH']);
 
 
