@@ -44,7 +44,7 @@ class AquariumDataController extends Controller
         ]);
     }
 
-    public function getAllTurbidity(Request $request)
+    public function getAllTroebelheid(Request $request)
     {
         $items = AquariumData::where('Troebelheid', '>', 0)->get(['Troebelheid']);
 
@@ -62,13 +62,12 @@ class AquariumDataController extends Controller
     }
 
 
-    public function getLatestTurbidity(Request $request)
+    public function getLatestTroebelheid(Request $request)
     {
         $latestTurbidity = AquariumData::where('Troebelheid', '>', 0)
             ->orderBy('created_at', 'desc')
             ->first(['Troebelheid']);
 
-        // Check if no value was found and return an error response
         if (!$latestTurbidity) {
             return response()->json([
                 'status' => 'error',
@@ -76,12 +75,81 @@ class AquariumDataController extends Controller
             ], 404);
         }
 
-        // If a value was found, return it in the response
         return response()->json([
             'status' => 'success',
             'data' => $latestTurbidity
         ]);
     }
 
+    public function getAllStroming(Request $request)
+    {
+        $items = AquariumData::where('Stroming', '>', 0)->get(['Stroming']);
 
+        if ($items->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No current values found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $items
+        ]);
+    }
+
+    public function getLatestStroming(Request $request)
+    {
+        $latestCurrent = AquariumData::where('Stroming', '>', 0)
+            ->orderBy('created_at', 'desc')
+            ->first(['Stroming']);
+
+        if (!$latestCurrent) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No current value found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $latestCurrent
+        ]);
+    }
+
+    public function getAllWaterLevel(Request $request)
+    {
+        $items = AquariumData::where('Waterlevel', '>', 0)->get(['Waterlevel']);
+
+        if ($items->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No water level values found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $items
+        ]);
+    }
+
+    public function getLatestWaterLevel(Request $request)
+    {
+        $latestWaterLevel = AquariumData::where('Waterlevel', '>', 0)
+            ->orderBy('created_at', 'desc')
+            ->first(['Waterlevel']);
+
+        if (!$latestWaterLevel) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No water level found'
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $latestWaterLevel
+        ]);
+    }
 }
