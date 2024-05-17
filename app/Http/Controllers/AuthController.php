@@ -3,51 +3,82 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:6',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => bcrypt($request->password),
         ]);
 
-        return response()->json($user, 201);
+        $token = $user->createToken('AuthToken')->plainTextToken;
+
+        return response()->json(['token' => $token], 201);
     }
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
+        $credentials = $request->only('email', 'password');
 
-        $user = User::where('email', $request->email)->first();
+        if (Auth::attempt($credentials)) 
+        {
+            $token = $request->user()->createToken('AuthToken')->plainTextToken;
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+            return response()->json(['token' => $token], 200);
         }
 
-        $token = $user->createToken('token-name')->plainTextToken;
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
 
-        return response()->json(['token' => $token]);
+    public function logout(Request $request)
+    {
+        if ($request->user()) 
+        {
+            $request->user()->currentAccessToken()->delete();
+            return response()->json(['message' => 'Successfully logged out'], 200);
+        } 
+        else 
+        {
+            return response()->json(['message' => 'Failed to logout...'], 401);
+        }
     }
 
     public function user(Request $request)
     {
-        return $request->user();
+        return response()->json($request->user(), 200);
     }
+
+public function refresh(Request $request)
+{
+    $user = $request->user();
+
+    if ($user) {
+        // Revoke the current access token
+        $user->currentAccessToken()->delete();
+
+        // Generate a new access token
+        $token = $user->createToken('AuthToken')->plainTextToken;
+
+        // Return the new token to the client
+        return response()->json(['token' => $token], 200);
+    }
+
+    return response()->json(['message' => 'Unauthorized'], 401);
+}
 }
