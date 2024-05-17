@@ -17,8 +17,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        if ($validator->fails()) 
-        {
+        if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
         }
 
@@ -65,19 +64,21 @@ class AuthController extends Controller
         return response()->json($request->user(), 200);
     }
 
-    public function refresh(Request $request)
-    {
-        $user = $request->user();
-    
-        if ($user) 
-        {
-            $user->currentAccessToken()->delete();
-    
-            $token = $user->createToken('AuthToken')->plainTextToken;
-    
-            return response()->json(['token' => $token], 200);
-        }
-    
-        return response()->json(['message' => 'Unauthorized'], 401);
+public function refresh(Request $request)
+{
+    $user = $request->user();
+
+    if ($user) {
+        // Revoke the current access token
+        $user->currentAccessToken()->delete();
+
+        // Generate a new access token
+        $token = $user->createToken('AuthToken')->plainTextToken;
+
+        // Return the new token to the client
+        return response()->json(['token' => $token], 200);
     }
+
+    return response()->json(['message' => 'Unauthorized'], 401);
+}
 }
