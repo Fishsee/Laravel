@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AquariumDataController;
-use Illuminate\Support\Facades\DB;
 
 
 // Public routes
@@ -30,6 +29,8 @@ Route::get('/average-PH/{aquarium_id}/{date}', [AquariumDataController::class, '
 // Routes for turbidity data
 Route::get('/all-troebelheid/{aquarium_id}', [AquariumDataController::class, 'getAllTroebelheid']);
 Route::get('/last-troebelheid/{aquarium_id}', [AquariumDataController::class, 'getLatestTroebelheid']);
+Route::get('/average-troebelheid/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAverageTroebelheid']);
+
 
 // Routes for current data
 Route::get('/all-stroming/{aquarium_id}', [AquariumDataController::class, 'getAllStroming']);

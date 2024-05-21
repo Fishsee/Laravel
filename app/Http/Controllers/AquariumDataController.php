@@ -132,6 +132,51 @@ class AquariumDataController extends Controller
         ]);
     }
 
+    public function getDailyAverageTroebelheid($aquarium_id, Request $request, $date = null)
+    {
+        $query = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('Troebelheid', '>', 0);
+
+        if ($date) {
+            $parsedDate = date('Y-m-d', strtotime($date));
+            $query->whereDate('created_at', $parsedDate);
+
+            $averageTroebelheid = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(Troebelheid) as average_troebelheid'))
+                ->groupBy('date')
+                ->first();
+
+            if (!$averageTroebelheid) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No troebelheid values found for aquarium ID ' . $aquarium_id . ' on date ' . $parsedDate
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $averageTroebelheid
+            ]);
+        } else {
+            $dailyAverageTroebelheid = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(Troebelheid) as average_troebelheid'))
+                ->groupBy('date')
+                ->get();
+
+            if ($dailyAverageTroebelheid->isEmpty()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No troebelheid values found for aquarium ID ' . $aquarium_id
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $dailyAverageTroebelheid
+            ]);
+        }
+    }
+
     public function getAllStroming($aquarium_id, Request $request)
     {
         $items = AquariumData::where('aquarium_id', $aquarium_id)
