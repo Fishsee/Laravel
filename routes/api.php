@@ -35,6 +35,8 @@ Route::get('/average-troebelheid/{aquarium_id}/{date}', [AquariumDataController:
 // Routes for current data
 Route::get('/all-stroming/{aquarium_id}', [AquariumDataController::class, 'getAllStroming']);
 Route::get('/last-stroming/{aquarium_id}', [AquariumDataController::class, 'getLatestStroming']);
+Route::get('/average-stroming/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAverageStroming']);
+
 
 // Routes for water level data
 Route::get('/all-waterlevel/{aquarium_id}', [AquariumDataController::class, 'getAllWaterLevel']);

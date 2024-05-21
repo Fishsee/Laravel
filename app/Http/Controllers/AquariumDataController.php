@@ -216,6 +216,52 @@ class AquariumDataController extends Controller
         ]);
     }
 
+    public function getDailyAverageStroming($aquarium_id, Request $request, $date = null)
+    {
+        $query = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('Stroming', '>', 0);
+
+        if ($date) {
+            $parsedDate = date('Y-m-d', strtotime($date));
+            $query->whereDate('created_at', $parsedDate);
+
+            $averageStroming = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(Stroming) as average_stroming'))
+                ->groupBy('date')
+                ->first();
+
+            if (!$averageStroming) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No stroming values found for aquarium ID ' . $aquarium_id . ' on date ' . $parsedDate
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $averageStroming
+            ]);
+        } else {
+            $dailyAverageStroming = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(Stroming) as average_stroming'))
+                ->groupBy('date')
+                ->get();
+
+            if ($dailyAverageStroming->isEmpty()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No stroming values found for aquarium ID ' . $aquarium_id
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $dailyAverageStroming
+            ]);
+        }
+    }
+
+
     public function getAllWaterLevel($aquarium_id, Request $request)
     {
         $items = AquariumData::where('aquarium_id', $aquarium_id)
