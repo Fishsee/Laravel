@@ -300,4 +300,50 @@ class AquariumDataController extends Controller
             'data' => $latestWaterLevel
         ]);
     }
+
+    public function getDailyAverageWaterLevel($aquarium_id, Request $request, $date = null)
+    {
+        $query = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('Waterlevel', '>', 0);
+
+        if ($date) {
+            $parsedDate = date('Y-m-d', strtotime($date));
+            $query->whereDate('created_at', $parsedDate);
+
+            $averageWaterLevel = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(Waterlevel) as average_water_level'))
+                ->groupBy('date')
+                ->first();
+
+            if (!$averageWaterLevel) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No water level values found for aquarium ID ' . $aquarium_id . ' on date ' . $parsedDate
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $averageWaterLevel
+            ]);
+        } else {
+            $dailyAverageWaterLevel = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(Waterlevel) as average_water_level'))
+                ->groupBy('date')
+                ->get();
+
+            if ($dailyAverageWaterLevel->isEmpty()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No water level values found for aquarium ID ' . $aquarium_id
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $dailyAverageWaterLevel
+            ]);
+        }
+    }
+
 }

@@ -41,6 +41,7 @@ Route::get('/average-stroming/{aquarium_id}/{date}', [AquariumDataController::cl
 // Routes for water level data
 Route::get('/all-waterlevel/{aquarium_id}', [AquariumDataController::class, 'getAllWaterLevel']);
 Route::get('/last-waterlevel/{aquarium_id}', [AquariumDataController::class, 'getLatestWaterLevel']);
+Route::get('/average-waterlevel/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAverageWaterLevel']);
 
 
 
