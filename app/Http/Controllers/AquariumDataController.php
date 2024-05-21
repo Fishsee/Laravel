@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AquariumData;
+use Illuminate\Support\Facades\DB;
+
 
 class AquariumDataController extends Controller
 {
@@ -44,6 +46,51 @@ class AquariumDataController extends Controller
             'status' => 'success',
             'data' => $latestPH
         ]);
+    }
+
+    public function getDailyAveragePH($aquarium_id, Request $request, $date = null)
+    {
+        $query = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('PH_Waarde', '>', 0);
+
+        if ($date) {
+            $parsedDate = date('Y-m-d', strtotime($date));
+            $query->whereDate('created_at', $parsedDate);
+
+            $averagePH = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(PH_Waarde) as average_ph'))
+                ->groupBy('date')
+                ->first();
+
+            if (!$averagePH) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No pH values found for aquarium ID ' . $aquarium_id . ' on date ' . $parsedDate
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $averagePH
+            ]);
+        } else {
+            $dailyAveragePH = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(PH_Waarde) as average_ph'))
+                ->groupBy('date')
+                ->get();
+
+            if ($dailyAveragePH->isEmpty()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No pH values found for aquarium ID ' . $aquarium_id
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $dailyAveragePH
+            ]);
+        }
     }
 
     public function getAllTroebelheid($aquarium_id, Request $request)
