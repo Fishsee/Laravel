@@ -9,8 +9,10 @@ class AquariumData extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['aquarium_id', 'PH_Waarde', 'Troebelheid', 'Stroming', 'Waterlevel'];
+
     public function aquarium()
     {
-        return $this->hasOne(Aquarium::class);
+        return $this->belongsTo(Aquarium::class);
     }
 }
