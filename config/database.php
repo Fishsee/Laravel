@@ -42,7 +42,7 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => env('DB_HOST', '100.86.204.58'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'fishsee'),
             'username' => env('DB_USERNAME', 'fishsee'),
@@ -62,11 +62,11 @@ return [
         'mariadb' => [
             'driver' => 'mariadb',
             'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => env('DB_HOST', '100.86.204.58'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'fishsee'),
             'username' => env('DB_USERNAME', 'fishsee'),
-            'password' => env('DB_PASSWORD', ''),
+            'password' => env('DB_PASSWORD', 'P@ssword123!'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => env('DB_CHARSET', 'utf8mb4'),
             'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
