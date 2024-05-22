@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AquariumData;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
 
 class AquariumDataController extends Controller
 {
     public function getAllPH($aquarium_id, Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
         $items = AquariumData::where('aquarium_id', $aquarium_id)
             ->where('PH_Waarde', '>', 0)
             ->get(['PH_Waarde']);
@@ -30,6 +36,12 @@ class AquariumDataController extends Controller
 
     public function getLatestPH($aquarium_id, Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
         $latestPH = AquariumData::where('aquarium_id', $aquarium_id)
             ->where('PH_Waarde', '>', 0)
             ->orderBy('created_at', 'desc')
@@ -50,6 +62,12 @@ class AquariumDataController extends Controller
 
     public function getDailyAveragePH($aquarium_id, Request $request, $date = null)
     {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
         $query = AquariumData::where('aquarium_id', $aquarium_id)
             ->where('PH_Waarde', '>', 0);
 
@@ -93,8 +111,15 @@ class AquariumDataController extends Controller
         }
     }
 
+
     public function getAllTroebelheid($aquarium_id, Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
         $items = AquariumData::where('aquarium_id', $aquarium_id)
             ->where('Troebelheid', '>', 0)
             ->get(['Troebelheid']);
@@ -114,6 +139,12 @@ class AquariumDataController extends Controller
 
     public function getLatestTroebelheid($aquarium_id, Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
         $latestTurbidity = AquariumData::where('aquarium_id', $aquarium_id)
             ->where('Troebelheid', '>', 0)
             ->orderBy('created_at', 'desc')
@@ -134,6 +165,12 @@ class AquariumDataController extends Controller
 
     public function getDailyAverageTroebelheid($aquarium_id, Request $request, $date = null)
     {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
         $query = AquariumData::where('aquarium_id', $aquarium_id)
             ->where('Troebelheid', '>', 0);
 
@@ -179,6 +216,12 @@ class AquariumDataController extends Controller
 
     public function getAllStroming($aquarium_id, Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
         $items = AquariumData::where('aquarium_id', $aquarium_id)
             ->where('Stroming', '>', 0)
             ->get(['Stroming']);
@@ -198,6 +241,12 @@ class AquariumDataController extends Controller
 
     public function getLatestStroming($aquarium_id, Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
         $latestCurrent = AquariumData::where('aquarium_id', $aquarium_id)
             ->where('Stroming', '>', 0)
             ->orderBy('created_at', 'desc')
@@ -218,6 +267,12 @@ class AquariumDataController extends Controller
 
     public function getDailyAverageStroming($aquarium_id, Request $request, $date = null)
     {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
         $query = AquariumData::where('aquarium_id', $aquarium_id)
             ->where('Stroming', '>', 0);
 
@@ -261,9 +316,14 @@ class AquariumDataController extends Controller
         }
     }
 
-
     public function getAllWaterLevel($aquarium_id, Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
         $items = AquariumData::where('aquarium_id', $aquarium_id)
             ->where('Waterlevel', '>', 0)
             ->get(['Waterlevel']);
@@ -283,6 +343,12 @@ class AquariumDataController extends Controller
 
     public function getLatestWaterLevel($aquarium_id, Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
         $latestWaterLevel = AquariumData::where('aquarium_id', $aquarium_id)
             ->where('Waterlevel', '>', 0)
             ->orderBy('created_at', 'desc')
@@ -303,6 +369,12 @@ class AquariumDataController extends Controller
 
     public function getDailyAverageWaterLevel($aquarium_id, Request $request, $date = null)
     {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
         $query = AquariumData::where('aquarium_id', $aquarium_id)
             ->where('Waterlevel', '>', 0);
 
@@ -345,5 +417,5 @@ class AquariumDataController extends Controller
             ]);
         }
     }
-
 }
+
