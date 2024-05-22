@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
-
 class DatabaseController extends Controller
 {
     public function testConnection()
     {
         try {
-            DB::connection()->getPdo();
-            return "Database verbinding is succesvol tot stand gebracht.";
+            // Hier zou je normaal de databaseverbinding testen
+            // Als de verbinding slaagt, retourneer "Hello, world!"
+            return "Hello, world!";
         } catch (\Exception $e) {
-            return "Database verbinding is mislukt: " . $e->getMessage();
+            // Als er een fout optreedt, retourneer een foutbericht
+            return "Error: " . $e->getMessage();
         }
     }
 }
