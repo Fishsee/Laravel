@@ -14,11 +14,8 @@ return new class extends Migration
         Schema::create('aquaria', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('aquarium_data_id');
             $table->timestamps();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('aquarium_data_id')->references('id')->on('aquarium_data');
         });
     }
 
