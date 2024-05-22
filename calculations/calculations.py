@@ -18,6 +18,13 @@ def linear_model(x, a, b):
 def exponential_model(x, a, b):
     return a * np.exp(b * x)
 
+def calculate_r_squared(y, y_pred):
+    residuals = y - y_pred
+    ss_res = np.sum(residuals ** 2)
+    ss_tot = np.sum((y - np.mean(y)) ** 2)
+    r_squared = 1 - (ss_res / ss_tot)
+    return r_squared
+
 margin = 0.5
 
 predicted_values = {}
