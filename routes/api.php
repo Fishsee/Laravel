@@ -10,6 +10,10 @@ use App\Http\Controllers\DataController;
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
+// Routes for connection between Laravel and Arduino
+Route::get('/data-recieve', [DataController::class, 'getData']);
+Route::post('/data-send', [DataController::class, 'postData']);
+
 // Routes protected by Sanctum middleware
 Route::middleware('auth:sanctum')->group(function () {
     // Routes accessible only to authenticated users
@@ -37,9 +41,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/last-waterlevel/{aquarium_id}', [AquariumDataController::class, 'getLatestWaterLevel'])->name('last-waterlevel');
     Route::get('/average-waterlevel/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAverageWaterLevel'])->name('average-waterlevel');
 
-    // Routes for connection between Laravel and Arduino
-    Route::get('/data-recieve', [DataController::class, 'getData']);
-    Route::post('/data-send', [DataController::class, 'postData']);
 });
 
 ?>
