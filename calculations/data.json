@@ -1,0 +1,7 @@
+[
+    {"acidity": 5.1, "turbidity": 1.2},
+    {"acidity": 5.3, "turbidity": 1.4},
+    {"acidity": 5.8, "turbidity": 1.6},
+    {"acidity": 6.0, "turbidity": 1.8},
+    {"acidity": 6.2, "turbidity": 2.0}
+]
