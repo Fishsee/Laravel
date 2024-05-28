@@ -6,7 +6,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def test_fetch_data():
-    url = 'http://127.0.0.1:8000/api/get-data'
+    url = 'http://127.0.0.1:8000/api/import-to-python'
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -19,7 +19,7 @@ def test_fetch_data():
         print(f"Fetch data test failed: {e}")
 
 def test_send_feedback():
-    url = 'http://127.0.0.1:8000/api/predicted-values'
+    url = 'http://127.0.0.1:8000/api/export-from-python'
     data = {
         "acidity": [6.3, 6.4, 6.5, 6.6, 6.7],
         "turbidity": [2.1, 2.2, 2.3, 2.4, 2.5]

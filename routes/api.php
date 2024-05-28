@@ -8,8 +8,8 @@ use App\Http\Controllers\DataController;
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/get-data', [DataController::class, 'getDataInChunks']);
-Route::post('/predicted-values', [DataController::class, 'store']);
+Route::get('/import-to-python', [DataController::class, 'getDataInChunks']);
+Route::post('/export-from-python', [DataController::class, 'store']);
 
 // Routes protected by Sanctum middleware
 Route::middleware('auth:sanctum')->group(function () {

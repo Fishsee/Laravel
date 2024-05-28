@@ -60,7 +60,7 @@ def send_feedback(url, data):
         print(f"Error sending feedback: {e}")
 
 # Main execution
-data_url = 'http://fishsee.test/api/get-data'
+data_url = 'http://fishsee.test/api/import-to-python'
 data = fetch_data(data_url)
 
 if data:
@@ -91,7 +91,7 @@ if data:
         else:
             print(f"Column {column_name} not found in data.")
 
-    feedback_url = 'http://fishsee.test/predicted-values'
+    feedback_url = 'http://fishsee.test/export-from-python'
     send_feedback(feedback_url, predicted_values)
 else:
     print("Failed to fetch data.")
