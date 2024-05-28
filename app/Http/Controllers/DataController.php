@@ -12,7 +12,7 @@ class DataController extends Controller
         return response()->json(['message' => 'Hello, this is your data!']);
     }
 
-    // Methode voor de POST-aanvraag
+    // Methode voor de POST-aanvraag dit is een test
     public function postData(Request $request)
     {
         // Hier zou je normaal gesproken de data verwerken
