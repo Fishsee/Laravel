@@ -181,13 +181,52 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
+      '/api/data-recieve' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'generated::XJZc8BmM6w1KDAjZ',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'GET' => 0,
+            'HEAD' => 1,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      '/api/data-send' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'generated::JjJJeugVmGQDmAVI',
+          ),
+          1 => NULL,
+          2 => 
+          array (
+            'POST' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
       '/up' => 
       array (
         0 => 
         array (
           0 => 
           array (
-            '_route' => 'generated::6AUi9MZRyvqUtgIm',
+            '_route' => 'generated::VxizRSHLQQHGq6k6',
           ),
           1 => NULL,
           2 => 
@@ -207,7 +246,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::VBestSheh49HyTEq',
+            '_route' => 'generated::7fTXnR44GayGRrPB',
           ),
           1 => NULL,
           2 => 
@@ -1309,7 +1348,82 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::6AUi9MZRyvqUtgIm' => 
+    'generated::XJZc8BmM6w1KDAjZ' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'GET',
+        1 => 'HEAD',
+      ),
+      'uri' => 'api/data-recieve',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'auth:sanctum',
+        ),
+        'uses' => 'App\\Http\\Controllers\\DataController@getData',
+        'controller' => 'App\\Http\\Controllers\\DataController@getData',
+        'namespace' => NULL,
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'generated::XJZc8BmM6w1KDAjZ',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'generated::JjJJeugVmGQDmAVI' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'POST',
+      ),
+      'uri' => 'api/data-send',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'api',
+          1 => 'auth:sanctum',
+        ),
+        'uses' => 'App\\Http\\Controllers\\DataController@postData',
+        'controller' => 'App\\Http\\Controllers\\DataController@postData',
+        'namespace' => NULL,
+        'prefix' => 'api',
+        'where' => 
+        array (
+        ),
+        'as' => 'generated::JjJJeugVmGQDmAVI',
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'generated::VxizRSHLQQHGq6k6' => 
     array (
       'methods' => 
       array (
@@ -1327,8 +1441,8 @@ app('router')->setCompiledRoutes(
                     \\Illuminate\\Support\\Facades\\Event::dispatch(new \\Illuminate\\Foundation\\Events\\DiagnosingHealth);
 
                     return \\Illuminate\\Support\\Facades\\View::file(\'/var/www/Laravel/vendor/laravel/framework/src/Illuminate/Foundation/Configuration\'.\'/../resources/health-up.blade.php\');
-                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000003210000000000000000";}}',
-        'as' => 'generated::6AUi9MZRyvqUtgIm',
+                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"00000000000003220000000000000000";}}',
+        'as' => 'generated::VxizRSHLQQHGq6k6',
       ),
       'fallback' => false,
       'defaults' => 
@@ -1344,7 +1458,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::VBestSheh49HyTEq' => 
+    'generated::7fTXnR44GayGRrPB' => 
     array (
       'methods' => 
       array (
@@ -1358,18 +1472,15 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'web',
         ),
-        'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:173:"function () {
+        'uses' => 'O:55:"Laravel\\SerializableClosure\\UnsignedSerializableClosure":1:{s:12:"serializable";O:46:"Laravel\\SerializableClosure\\Serializers\\Native":5:{s:3:"use";a:0:{}s:8:"function";s:44:"function () {
     return \\view(\'welcome\');
-
-\\Illuminate\\Support\\Facades\\Route::get(\'/test-database-connection\', \'App\\Http\\Controllers\\DatabaseController@testConnection\');
-
-}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000003350000000000000000";}}',
+}";s:5:"scope";s:37:"Illuminate\\Routing\\RouteFileRegistrar";s:4:"this";N;s:4:"self";s:32:"00000000000003380000000000000000";}}',
         'namespace' => NULL,
         'prefix' => '',
         'where' => 
         array (
         ),
-        'as' => 'generated::VBestSheh49HyTEq',
+        'as' => 'generated::7fTXnR44GayGRrPB',
       ),
       'fallback' => false,
       'defaults' => 

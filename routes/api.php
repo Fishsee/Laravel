@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AquariumDataController;
+use App\Http\Controllers\DataController;
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -35,6 +36,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/all-waterlevel/{aquarium_id}', [AquariumDataController::class, 'getAllWaterLevel'])->name('all-waterlevel');
     Route::get('/last-waterlevel/{aquarium_id}', [AquariumDataController::class, 'getLatestWaterLevel'])->name('last-waterlevel');
     Route::get('/average-waterlevel/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAverageWaterLevel'])->name('average-waterlevel');
+
+    // Routes for connection between Laravel and Arduino
+    Route::get('/data-recieve', [DataController::class, 'getData']);
+    Route::post('/data-send', [DataController::class, 'postData']);
 });
 
 ?>
