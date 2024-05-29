@@ -14,6 +14,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/data-recieve', [DataController::class, 'getData']);
 Route::post('/data-send', [DataController::class, 'postData']);
 
+
 // Routes protected by Sanctum middleware
 Route::middleware('auth:sanctum')->group(function () {
     // Routes accessible only to authenticated users

@@ -3,21 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\LiveData;
 
 class DataController extends Controller
 {
-    // Methode voor de GET-aanvraag
+
     public function getData()
     {
-        return response()->json(['message' => 'Hello, this is your data!']);
+        $latestData = LiveData::latest()->first();
+
+        return response()->json($latestData);
     }
 
-    // Methode voor de POST-aanvraag dit is een tests
+    // Method for the POST request
     public function postData(Request $request)
     {
-        // Hier zou je normaal gesproken de data verwerken
-        $data = $request->all();
-        return response()->json(['received' => $data]);
+        $validatedData = $request->validate([
+            'tempC' => 'required|numeric',
+            'distance_cm' => 'required|numeric',
+            'light_level' => 'required|numeric',
+            'water_level' => 'required|numeric',
+            'flow_rate' => 'required|numeric',
+            'phValue' => 'required|numeric',
+            'turbidity' => 'required|numeric',
+        ]);
+
+        $latestData = LiveData::create($validatedData);
+
+        return response()->json($latestData);
     }
 }
-
