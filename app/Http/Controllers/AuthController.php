@@ -64,21 +64,21 @@ class AuthController extends Controller
         return response()->json($request->user(), 200);
     }
 
-public function refresh(Request $request)
-{
-    $user = $request->user();
+    public function refresh(Request $request)
+    {
+        $user = $request->user();
 
-    if ($user) {
-        // Revoke the current access token
-        $user->currentAccessToken()->delete();
+        if ($user) {
+            // Revoke the current access token
+            $user->currentAccessToken()->delete();
 
-        // Generate a new access token
-        $token = $user->createToken('AuthToken')->plainTextToken;
+            // Generate a new access token
+            $token = $user->createToken('AuthToken')->plainTextToken;
 
-        // Return the new token to the client
-        return response()->json(['token' => $token], 200);
+            // Return the new token to the client
+            return response()->json(['token' => $token], 200);
+        }
+
+        return response()->json(['message' => 'Unauthorized'], 401);
     }
-
-    return response()->json(['message' => 'Unauthorized'], 401);
-}
 }
