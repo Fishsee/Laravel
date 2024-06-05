@@ -19,3 +19,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+ssh
+ssh.pub
+composer.lock
+.DS_Store
