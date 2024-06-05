@@ -43,6 +43,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/last-waterlevel/{aquarium_id}', [AquariumDataController::class, 'getLatestWaterLevel'])->name('last-waterlevel');
     Route::get('/average-waterlevel/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAverageWaterLevel'])->name('average-waterlevel');
 
+    // Routes for temperature data
+    Route::get('/all-temperature/{aquarium_id}', [AquariumDataController::class, 'getAllTemperatures'])->name('all-temperature');
+    Route::get('/last-temperature/{aquarium_id}', [AquariumDataController::class, 'getLatestTemperature'])->name('last-temperature');
+    Route::get('/average-temperature/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageTemperature'])->name('average-temperature');
+
+// Routes for distance data
+    Route::get('/all-distance/{aquarium_id}', [AquariumDataController::class, 'getAllDistances'])->name('all-distance');
+    Route::get('/last-distance/{aquarium_id}', [AquariumDataController::class, 'getLatestDistance'])->name('last-distance');
+    Route::get('/average-distance/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageDistance'])->name('average-distance');
+
+// Routes for light level data
+    Route::get('/all-light-level/{aquarium_id}', [AquariumDataController::class, 'getAllLightLevels'])->name('all-light-level');
+    Route::get('/last-light-level/{aquarium_id}', [AquariumDataController::class, 'getLatestLightLevel'])->name('last-light-level');
+    Route::get('/average-light-level/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageLightLevel'])->name('average-light-level');
+
+
 });
 
 ?>

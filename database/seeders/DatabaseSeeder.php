@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             $aquariums = Aquarium::factory(2)->create(['user_id' => $user->id]);
 
             foreach ($aquariums as $aquarium) {
-                AquariumData::factory()->create(['aquarium_id' => $aquarium->id]);
+                AquariumData::factory()->count(5)->create(['aquarium_id' => $aquarium->id]);
             }
         }
     }
