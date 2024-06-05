@@ -4,17 +4,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AquariumDataController;
+//Shouldn't be necessary anymore
 use App\Http\Controllers\DataController;
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-// Routes for connection between Laravel and Arduino
-Route::get('/data-recieve', [DataController::class, 'getData']);
-Route::post('/data-send', [DataController::class, 'postData']);
+// New changes should work with the old PH-controllers
+//Route::get('/data-recieve', [DataController::class, 'getData']);
+//Route::post('/data-send', [DataController::class, 'postData']);
 
-
+Route::post('/data-send', [AquariumDataController::class, 'postData']);
 // Routes protected by Sanctum middleware
 Route::middleware('auth:sanctum')->group(function () {
     // Routes accessible only to authenticated users

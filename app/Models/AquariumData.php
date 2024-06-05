@@ -9,7 +9,7 @@ class AquariumData extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['aquarium_id', 'PH_Waarde', 'Troebelheid', 'Stroming', 'Waterlevel'];
+    protected $fillable = ['tempC', 'distance_cm', 'light_level', 'water_level', 'flow_rate', 'phValue', 'turbidity'];
 
     public function aquarium()
     {
