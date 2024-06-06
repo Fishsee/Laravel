@@ -10,41 +10,44 @@ use App\Models\AquariumData;
 class DataController extends Controller
 {
     public function processAndRetrieveData($id)
-{
-    // Fetch data from the database using AquariumData model
-    $aquariumData = AquariumData::where('aquarium_id', $id)->first();
+    {
+        // Fetch the 12 newest records from the database using AquariumData model
+        $aquariumData = AquariumData::where('aquarium_id', $id)
+            ->orderBy('created_at', 'asc') // Order by ascending to get oldest records first
+            ->take(12)
+            ->get();
 
-    if (!$aquariumData) {
-        return response()->json(['error' => 'Data not found'], 404);
-    }
+        if ($aquariumData->isEmpty()) {
+            return response()->json(['error' => 'Data not found'], 404);
+        }
 
-    // Log a message to confirm that the data was sent
-    Log::info('Data sent to the Python script for processing: ' . json_encode($aquariumData->toArray()));
+        // Extract data for acidity, turbidity, flow, and waterlevel from the collection
+        $acidity = $aquariumData->pluck('Acidity')->toArray();
+        $turbidity = $aquariumData->pluck('Turbidity')->toArray();
+        $flow = $aquariumData->pluck('Flow')->toArray();
+        $waterlevel = $aquariumData->pluck('Waterlevel')->toArray();
 
-    // Prepare the data to send to the Python script
-    $requestData = [
-        'data' => [
-            'acidity' => json_decode($aquariumData->acidity),
-            'turbidity' => json_decode($aquariumData->turbidity)
-        ],
-        'thresholds' => [
+        // Define the thresholds
+        $thresholds = [
             'acidity' => ['low' => 6.5, 'high' => 7.5],
-            'turbidity' => 60
-        ]
-    ];
+            'turbidity' => 60,
+            'flow' => 50, // Example threshold for flow
+            'waterlevel' => 50 // Example threshold for waterlevel
+        ];
 
-    // Send data to the Python script
-    $response = Http::post('http://fishsee.test/process-data', $requestData);
+        // Prepare the response data
+        $responseData = [
+            'data' => [
+                'acidity' => $acidity,
+                'turbidity' => $turbidity,
+                'flow' => $flow,
+                'waterlevel' => $waterlevel
+            ],
+            'thresholds' => $thresholds
+        ];
 
-    // Get the JSON content of the response
-    $responseData = $response->json();
-
-    // Include the original data in the response body
-    $responseData['original_data'] = $aquariumData;
-
-    // Return the modified response
-    return response()->json($responseData);
-}
+        return response()->json($responseData);
+    }
 
     public function processData(Request $request)
     {

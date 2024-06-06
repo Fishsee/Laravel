@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\AquariumData;
 use App\Models\Aquarium;
+use Carbon\Carbon;
 
 class AquariumDataTableSeeder extends Seeder
 {
@@ -14,22 +14,30 @@ class AquariumDataTableSeeder extends Seeder
         // Get all aquariums
         $aquariums = Aquarium::all();
 
-        // Loop through each aquarium and seed data
+        // Loop through each aquarium and seed current data
         foreach ($aquariums as $aquarium) {
-            // Generate random data for each column
-            $acidity = rand(0, 100) / 10; // Random acidity value between 0 and 10
-            $turbidity = rand(0, 100); // Random turbidity value between 0 and 100
-            $flow = rand(0, 100); // Random flow value between 0 and 100
-            $waterlevel = rand(0, 100); // Random water level value between 0 and 100
-
-            // Create a new aquarium data record
             AquariumData::create([
                 'aquarium_id' => $aquarium->id,
-                'acidity' => $acidity,
-                'turbidity' => $turbidity,
-                'flow' => $flow,
-                'waterlevel' => $waterlevel,
+                'acidity' => rand(0, 100) / 10,
+                'turbidity' => rand(0, 100),
+                'flow' => rand(0, 100),
+                'waterlevel' => rand(0, 100),
             ]);
+
+            // Seed past data (e.g., last 30 days)
+            for ($i = 0; $i < 30; $i++) {
+                $timestamp = Carbon::now()->subDays($i); // Generate past timestamps
+
+                AquariumData::create([
+                    'aquarium_id' => $aquarium->id,
+                    'acidity' => rand(0, 100) / 10,
+                    'turbidity' => rand(0, 100),
+                    'flow' => rand(0, 100),
+                    'waterlevel' => rand(0, 100),
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
+                ]);
+            }
         }
     }
 }
