@@ -6,7 +6,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def test_fetch_data():
-    url = 'http://127.0.0.1:8000/api/import-to-python'
+    url = 'http://127.0.0.1:8000/api/get-data'
     try:
         response = requests.get(url)
         response.raise_for_status()
