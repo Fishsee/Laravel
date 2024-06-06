@@ -9,30 +9,15 @@ class Aquarium extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'name'];
-
-    public function acidities()
-    {
-        return $this->hasMany(Acidity::class);
-    }
-
-    public function turbidities()
-    {
-        return $this->hasMany(Turbidity::class);
-    }
+    protected $fillable = ['user_id'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function data()
+    public function aquariumData()
     {
-        return $this->belongsTo(AquariumData::class);
-    }
-
-    public function fishes()
-    {
-        return $this->hasMany(Fish::class);
+        return $this->hasOne(AquariumData::class);
     }
 }

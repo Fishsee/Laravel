@@ -11,8 +11,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsersTableSeeder::class,
             AquariumsTableSeeder::class,
-            AciditiesTableSeeder::class,
-            TurbiditiesTableSeeder::class,
+            AquariumDataTableSeeder::class,
         ]);
     }
 }

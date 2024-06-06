@@ -10,8 +10,9 @@ class AquariumsTableSeeder extends Seeder
     public function run()
     {
         Aquarium::create([
-            'user_id' => 1, // Assuming user_id 1 exists
-            'name' => 'Test Aquarium',
+            'user_id' => 1,
+            'updated_at' => now(),
+            'created_at' => now(),
         ]);
     }
 }
