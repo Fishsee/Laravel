@@ -3,19 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\LiveData;
+use App\Models\AquariumData;
 
 class DataController extends Controller
 {
-
-    public function getData()
-    {
-        $latestData = LiveData::latest()->first();
-
-        return response()->json($latestData);
-    }
-
-    // Method for the POST request
     public function postData(Request $request)
     {
         $validatedData = $request->validate([
@@ -26,10 +17,15 @@ class DataController extends Controller
             'flow_rate' => 'required|numeric',
             'phValue' => 'required|numeric',
             'turbidity' => 'required|numeric',
+            'aquarium_id' => 'required|integer',
         ]);
 
-        $latestData = LiveData::create($validatedData);
+        $latestData = AquariumData::create($validatedData);
 
-        return response()->json($latestData);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data successfully recorded.',
+            'data' => $latestData
+        ]);
     }
 }

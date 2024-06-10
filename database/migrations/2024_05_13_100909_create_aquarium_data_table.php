@@ -15,15 +15,15 @@ class CreateAquariumDataTable extends Migration
     {
         Schema::create('aquarium_data', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('aquarium_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
+            $table->foreignId('aquarium_id')->constrained()->onDelete('cascade'); // Add foreign key constraint
             $table->decimal('tempC', 8, 2);
-            $table->integer('distance_cm');
-            $table->integer('light_level');
-            $table->integer('water_level');
-            $table->integer('flow_rate');
+            $table->decimal('distance_cm', 8, 2);
+            $table->decimal('light_level', 8, 2);
+            $table->decimal('water_level', 8, 2);
+            $table->decimal('flow_rate', 8, 2);
             $table->decimal('phValue', 8, 2);
-            $table->integer('turbidity');
+            $table->decimal('turbidity', 8, 2);
+            $table->timestamps();
         });
     }
 
