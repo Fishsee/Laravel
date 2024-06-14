@@ -1,7 +1,7 @@
 import json
 import numpy as np
-import sys
 from scipy.optimize import curve_fit
+import sys
 
 # Define functions for linear and exponential models
 def linear_model(x, a, b):
@@ -11,7 +11,7 @@ def exponential_model(x, a, b):
     return a * np.exp(b * x)
 
 # Define a function to fit models and calculate predicted values
-def fit_and_predict(test_data, thresholds=None):
+def fit_and_predict(test_data, thresholds):
     try:
         x = np.arange(len(test_data['data']['acidity']))
         margin = 0.5
@@ -32,19 +32,20 @@ def fit_and_predict(test_data, thresholds=None):
                 if column_name == 'turbidity':
                     future_y_pred = np.minimum(future_y_pred, thresholds[column_name])
 
+                # Prepare the predicted values dictionary
                 predicted_values[column_name] = {
                     'predicted_values': future_y_pred.round(2).tolist(),
                     'correlation_type': correlation_type
                 }
 
                 # Check against thresholds
-                if thresholds and column_name in thresholds:
+                if column_name in thresholds:
                     if isinstance(thresholds[column_name], dict):  # For low and high thresholds
-                        low_threshold = thresholds[column_name]['low']
-                        high_threshold = thresholds[column_name]['high']
-                        if np.any(future_y_pred < low_threshold):
+                        low_threshold = thresholds[column_name].get('low')
+                        high_threshold = thresholds[column_name].get('high')
+                        if low_threshold is not None and np.any(future_y_pred < low_threshold):
                             predicted_values[column_name]['warning'] = f"The low threshold for {column_name} is going to be exceeded."
-                        elif np.any(future_y_pred > high_threshold):
+                        elif high_threshold is not None and np.any(future_y_pred > high_threshold):
                             predicted_values[column_name]['warning'] = f"The high threshold for {column_name} is going to be exceeded."
                     else:  # For single threshold
                         threshold = thresholds[column_name]
@@ -66,6 +67,9 @@ def fit_and_predict(test_data, thresholds=None):
 # Define a function to fit models
 def fit_models(x, y, margin):
     try:
+        if len(y) < 2:
+            return None, None, None
+        
         linear_params, _ = curve_fit(linear_model, x, y)
         y_linear_pred = linear_model(x, *linear_params)
         residuals = np.abs(y - y_linear_pred)
@@ -86,17 +90,39 @@ def fit_models(x, y, margin):
 # Main execution
 if __name__ == "__main__":
     try:
-        if len(sys.argv) != 3:
-            raise ValueError("Invalid arguments. Usage: script.py <input_data> <thresholds>")
+        # Ensure the correct number of arguments are provided
+        expected_arguments = 2  # We expect 2 arguments: script name, and aquarium ID
+        actual_arguments = len(sys.argv)
+        
+        if actual_arguments != expected_arguments:
+            raise ValueError(f"Invalid number of arguments. Expected {expected_arguments}, but got {actual_arguments}. Usage: python script.py <aquarium_id>")
+        
+        # Read aquarium ID from command-line argument
+        aquarium_id = sys.argv[1]
 
-        input_data = json.loads(sys.argv[1])
-        thresholds = json.loads(sys.argv[2])
-
+        # Construct file name based on aquarium ID
+        file_name = f"../storage/aquarium_data_{aquarium_id}.json"
+        
+        # Read input data and thresholds from JSON file
+        with open(file_name, 'r') as f:
+            data = json.load(f)
+            input_data = data['data']
+            thresholds = data['thresholds']
+        
+        # Perform operations with input_data and thresholds
         result = fit_and_predict(input_data, thresholds)
+        
+        # Print the result as JSON
         print(json.dumps(result))
-    except IndexError as e:
-        print(json.dumps({"error": "Missing input data or thresholds. Ensure both are provided."}))
-    except json.JSONDecodeError as e:
-        print(json.dumps({"error": f"Failed to decode JSON input: {str(e)}"}))
+        
+        # Write result to a JSON file
+        output_file_name = f"../storage/predicted_values_{aquarium_id}.json"
+        with open(output_file_name, 'w') as output_file:
+            json.dump(result, output_file, indent=4)
+        
+        print(f"Predicted values saved to {output_file_name}")
+
+    except ValueError as ve:
+        print(json.dumps({"error": str(ve)}))
     except Exception as e:
         print(json.dumps({"error": str(e)}))
