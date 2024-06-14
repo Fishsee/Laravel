@@ -27,19 +27,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/average-PH/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAveragePH'])->name('average-PH');
 
     // Routes for turbidity data
-    Route::get('/all-troebelheid/{aquarium_id}', [AquariumDataController::class, 'getAllTroebelheid'])->name('all-troebelheid');
-    Route::get('/last-troebelheid/{aquarium_id}', [AquariumDataController::class, 'getLatestTroebelheid'])->name('last-troebelheid');
-    Route::get('/average-troebelheid/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAverageTroebelheid'])->name('average-troebelheid');
+    Route::get('/all-troebelheid/{aquarium_id}', [AquariumDataController::class, 'getAllturbidity'])->name('all-troebelheid');
+    Route::get('/last-troebelheid/{aquarium_id}', [AquariumDataController::class, 'getLatestturbidity'])->name('last-troebelheid');
+    Route::get('/average-troebelheid/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAverageturbidity'])->name('average-troebelheid');
 
     // Routes for current data
-    Route::get('/all-stroming/{aquarium_id}', [AquariumDataController::class, 'getAllStroming'])->name('all-stroming');
-    Route::get('/last-stroming/{aquarium_id}', [AquariumDataController::class, 'getLatestStroming'])->name('last-stroming');
-    Route::get('/average-stroming/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAverageStroming'])->name('average-stroming');
+    Route::get('/all-stroming/{aquarium_id}', [AquariumDataController::class, 'getAllflow_rate'])->name('all-stroming');
+    Route::get('/last-stroming/{aquarium_id}', [AquariumDataController::class, 'getLatestflow_rate'])->name('last-stroming');
+    Route::get('/average-stroming/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAverageflow_rate'])->name('average-stroming');
 
     // Routes for water level data
-    Route::get('/all-waterlevel/{aquarium_id}', [AquariumDataController::class, 'getAllWaterLevel'])->name('all-waterlevel');
-    Route::get('/last-waterlevel/{aquarium_id}', [AquariumDataController::class, 'getLatestWaterLevel'])->name('last-waterlevel');
-    Route::get('/average-waterlevel/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAverageWaterLevel'])->name('average-waterlevel');
+    Route::get('/all-waterlevel/{aquarium_id}', [AquariumDataController::class, 'getAllwater_level'])->name('all-waterlevel');
+    Route::get('/last-waterlevel/{aquarium_id}', [AquariumDataController::class, 'getLatestwater_level'])->name('last-waterlevel');
+    Route::get('/average-waterlevel/{aquarium_id}/{date}', [AquariumDataController::class, 'getDailyAveragewater_level'])->name('average-waterlevel');
 
     // Routes for temperature data
     Route::get('/all-temperature/{aquarium_id}', [AquariumDataController::class, 'getAllTemperatures'])->name('all-temperature');
