@@ -23,3 +23,5 @@ ssh
 ssh.pub
 composer.lock
 .DS_Store
+database/database.sqlite
+.env
