@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DataController;
+use App\Http\Controllers\PredictionDataController;
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -17,7 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/userdata', [AuthController::class, 'userdata']);
-    Route::post('/process-data/{id}', [DataController::class, 'processAndRetrieveData']);
-    Route::post('/process-data', [DataController::class, 'processData']);
-    Route::get('/test-data/{id}', [DataController::class, 'testDataFunctions']);
+    Route::post('/process-data/{id}', [PredictionDataController::class, 'processAndRetrieveData']);
+    Route::post('/process-data', [PredictionDataController::class, 'processData']);
+    Route::get('/test-data/{id}', [PredictionDataController::class, 'testDataFunctions']);
 });

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\AquariumData;
 
-class DataController extends Controller
+class PredictionDataController extends Controller
 {
     public function processAndRetrieveData($id)
     {
@@ -45,7 +45,7 @@ class DataController extends Controller
 
         // Define the file name based on the provided ID
         $fileName = "aquarium_data_{$id}.json";
-        
+
         // Write data to the specified JSON file
         $filePath = storage_path("{$fileName}");
         file_put_contents($filePath, json_encode($dataForProcessingSend));
