@@ -15,12 +15,22 @@ class AquariumController extends Controller
             return response()->json(['message' => 'Geen gegevens beschikbaar voor dit aquarium.'], 404);
         }
 
-        $fishTypes = FishType::all();
+        $fishTypes = FishType::all(); // Verander dit mogelijk afhankelijk van hoe vissen worden gekoppeld aan aquaria.
 
-        $results = [];
+        $results = [
+            'current_conditions' => [
+                'Temperature (C)' => $latestData->tempC,
+                'pH Value' => $latestData->phValue,
+                'Light Level' => $latestData->light_level,
+                'Water Level' => $latestData->water_level,
+                'Flow Rate' => $latestData->flow_rate,
+                'Turbidity' => $latestData->turbidity
+            ],
+            'fish_suitability' => []
+        ];
 
         foreach ($fishTypes as $fish) {
-            $results[$fish->name] = [
+            $results['fish_suitability'][$fish->name] = [
                 'Temperature OK' => $latestData->tempC >= $fish->temperature_min && $latestData->tempC <= $fish->temperature_max,
                 'pH OK' => $latestData->phValue >= $fish->ph_min && $latestData->phValue <= $fish->ph_max,
                 'Light Level OK' => $latestData->light_level >= $fish->lightlevel_min && $latestData->light_level <= $fish->lightlevel_max,
