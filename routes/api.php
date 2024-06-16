@@ -57,8 +57,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/last-light-level/{aquarium_id}', [AquariumDataController::class, 'getLatestLightLevel'])->name('last-light-level');
     Route::get('/average-light-level/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageLightLevel'])->name('average-light-level');
 
-    //Route for checking conditions fish
+    //Route for checking and adjusting conditions fish
     Route::get('/aquarium/{aquariumId}/check-conditions', [ConditionsController::class, 'checkConditions']);
+    Route::get('/aquarium/{aquariumId}/drop-ph-tablet', [ConditionsController::class, 'dropPHTablet']);
 
 
 
