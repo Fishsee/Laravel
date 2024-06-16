@@ -99,5 +99,4 @@ class DataController extends Controller
         return ['error' => 'Error processing data'];
     }
 }
-
 }

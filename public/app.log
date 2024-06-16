@@ -1,0 +1,72 @@
+2024-06-16 12:23:15,175 - INFO - Script started
+2024-06-16 12:23:15,175 - INFO - Aquarium ID: 1
+2024-06-16 12:23:15,175 - INFO - Reading data from ../storage/aquarium_data_1.json
+2024-06-16 12:23:15,175 - INFO - Fitting models for acidity
+2024-06-16 12:23:15,177 - INFO - Fitting models for turbidity
+2024-06-16 12:23:15,178 - INFO - Fitting models for flow
+2024-06-16 12:23:15,178 - INFO - Fitting models for waterlevel
+2024-06-16 12:23:15,179 - INFO - Model fitting and prediction completed
+2024-06-16 12:23:15,179 - INFO - Predicted values saved to ../storage/predicted_values_1.json
+2024-06-16 12:24:49,607 - INFO - Script started
+2024-06-16 12:24:49,608 - INFO - Aquarium ID: 1
+2024-06-16 12:24:49,608 - INFO - Reading data from ../storage/aquarium_data_1.json
+2024-06-16 12:24:49,616 - INFO - Fitting models for acidity
+2024-06-16 12:24:49,616 - INFO - Fitting models for turbidity
+2024-06-16 12:24:49,617 - INFO - Fitting models for flow
+2024-06-16 12:24:49,618 - INFO - Fitting models for waterlevel
+2024-06-16 12:24:49,618 - INFO - Model fitting and prediction completed
+2024-06-16 12:24:49,619 - INFO - Predicted values saved to ../storage/predicted_values_1.json
+2024-06-16 12:30:28,274 - INFO - Script started
+2024-06-16 12:30:28,274 - INFO - Aquarium ID: 1
+2024-06-16 12:30:28,274 - INFO - Reading data from ../storage/aquarium_data_1.json
+2024-06-16 12:30:28,274 - INFO - Fitting models for acidity
+2024-06-16 12:30:28,275 - INFO - Fitting models for turbidity
+2024-06-16 12:30:28,276 - INFO - Fitting models for flow
+2024-06-16 12:30:28,276 - INFO - Fitting models for waterlevel
+2024-06-16 12:30:28,276 - INFO - Model fitting and prediction completed
+2024-06-16 12:30:28,277 - INFO - Predicted values saved to ../storage/predicted_values_1.json
+2024-06-16 12:37:24,778 - INFO - Script started
+2024-06-16 12:37:24,778 - INFO - Aquarium ID: 1
+2024-06-16 12:37:24,779 - INFO - Reading data from ../storage/aquarium_data_1.json
+2024-06-16 12:37:24,779 - INFO - Fitting models for acidity
+2024-06-16 12:37:24,780 - INFO - Fitting models for turbidity
+2024-06-16 12:37:24,781 - INFO - Fitting models for flow
+2024-06-16 12:37:24,781 - INFO - Fitting models for waterlevel
+2024-06-16 12:37:24,781 - INFO - Model fitting and prediction completed
+2024-06-16 12:37:24,781 - INFO - Predicted values saved to ../storage/predicted_values_1.json
+2024-06-16 12:40:03,122 - INFO - Script started
+2024-06-16 12:40:03,122 - INFO - Aquarium ID: 1
+2024-06-16 12:40:03,122 - INFO - Reading data from ../storage/aquarium_data_1.json
+2024-06-16 12:40:03,123 - INFO - Fitting models for acidity
+2024-06-16 12:40:03,124 - INFO - Fitting models for turbidity
+2024-06-16 12:40:03,125 - INFO - Fitting models for flow
+2024-06-16 12:40:03,125 - INFO - Fitting models for waterlevel
+2024-06-16 12:40:03,126 - INFO - Model fitting and prediction completed
+2024-06-16 12:40:03,126 - INFO - Predicted values saved to ../storage/predicted_values_1.json
+2024-06-16 12:41:02,573 - INFO - Script started
+2024-06-16 12:41:02,573 - INFO - Aquarium ID: 1
+2024-06-16 12:41:02,573 - INFO - Reading data from ../storage/aquarium_data_1.json
+2024-06-16 12:41:02,573 - INFO - Fitting models for acidity
+2024-06-16 12:41:02,574 - INFO - Fitting models for turbidity
+2024-06-16 12:41:02,575 - INFO - Fitting models for flow
+2024-06-16 12:41:02,576 - INFO - Fitting models for waterlevel
+2024-06-16 12:41:02,576 - INFO - Model fitting and prediction completed
+2024-06-16 12:41:02,577 - INFO - Predicted values saved to ../storage/predicted_values_1.json
+2024-06-16 12:45:48,904 - INFO - Script started
+2024-06-16 12:45:48,904 - INFO - Aquarium ID: 1
+2024-06-16 12:45:48,904 - INFO - Reading data from ../storage/aquarium_data_1.json
+2024-06-16 12:45:48,904 - INFO - Fitting models for acidity
+2024-06-16 12:45:48,913 - INFO - Fitting models for turbidity
+2024-06-16 12:45:48,913 - INFO - Fitting models for flow
+2024-06-16 12:45:48,915 - INFO - Fitting models for waterlevel
+2024-06-16 12:45:48,916 - INFO - Model fitting and prediction completed
+2024-06-16 12:45:48,916 - INFO - Predicted values saved to ../storage/predicted_values_1.json
+2024-06-16 12:50:35,091 - INFO - Script started
+2024-06-16 12:50:35,092 - INFO - Aquarium ID: 1
+2024-06-16 12:50:35,092 - INFO - Reading data from ../storage/aquarium_data_1.json
+2024-06-16 12:50:35,092 - INFO - Fitting models for acidity
+2024-06-16 12:50:35,093 - INFO - Fitting models for turbidity
+2024-06-16 12:50:35,093 - INFO - Fitting models for flow
+2024-06-16 12:50:35,094 - INFO - Fitting models for waterlevel
+2024-06-16 12:50:35,095 - INFO - Model fitting and prediction completed
+2024-06-16 12:50:35,095 - INFO - Predicted values saved to ../storage/predicted_values_1.json
