@@ -18,6 +18,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/userdata', [AuthController::class, 'userdata']);
     Route::post('/process-data/{id}', [DataController::class, 'processAndRetrieveData']);
-    Route::post('/process-data', [DataController::class, 'processData']);
-    Route::get('/test-data/{id}', [DataController::class, 'testDataFunctions']);
 });
