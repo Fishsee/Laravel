@@ -6,7 +6,7 @@ use App\Models\AquariumData;
 use App\Models\FishType;
 use Illuminate\Http\Request;
 
-class AquariumController extends Controller
+class ConditionsController extends Controller
 {
     public function checkConditions($aquariumId) {
         $latestData = AquariumData::where('aquarium_id', $aquariumId)->latest()->first();

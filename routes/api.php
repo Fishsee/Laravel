@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AquariumController;
+use App\Http\Controllers\ConditionsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -58,7 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/average-light-level/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageLightLevel'])->name('average-light-level');
 
     //Route for checking conditions fish
-    Route::get('/aquarium/{aquariumId}/check-conditions', [AquariumController::class, 'checkConditions']);
+    Route::get('/aquarium/{aquariumId}/check-conditions', [ConditionsController::class, 'checkConditions']);
 
 
 
