@@ -60,9 +60,6 @@ Route::middleware('auth:sanctum')->group(function () {
     //Route for checking and adjusting conditions fish
     Route::get('/aquarium/{aquariumId}/check-conditions', [ConditionsController::class, 'checkConditions']);
     Route::get('/aquarium/{aquariumId}/drop-ph-tablet', [ConditionsController::class, 'dropPHTablet']);
-
-
-
 });
 
 ?>
