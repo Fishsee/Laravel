@@ -1,0 +1,36 @@
+INFO:root:This is an info message, nya
+2024-06-16 11:55:18,734 - INFO - Script started, nya
+2024-06-16 11:55:18,735 - INFO - Aquarium ID: 1, nya
+2024-06-16 11:55:18,735 - INFO - Reading data from ../storage/aquarium_data_1.json, nya
+2024-06-16 11:55:18,735 - ERROR - Error in fit_and_predict: 'data', nya
+2024-06-16 11:55:18,735 - INFO - Predicted values saved to ../storage/predicted_values_1.json, nya
+2024-06-16 11:57:14,931 - INFO - Script started, nya
+2024-06-16 11:57:14,931 - INFO - Aquarium ID: 1, nya
+2024-06-16 11:57:14,931 - INFO - Reading data from ../storage/aquarium_data_1.json, nya
+2024-06-16 11:57:14,932 - ERROR - Error in fit_and_predict: 'data', nya
+2024-06-16 11:57:14,932 - INFO - Predicted values saved to ../storage/predicted_values_1.json, nya
+2024-06-16 11:57:55,302 - INFO - Script started, nya
+2024-06-16 11:57:55,302 - INFO - Aquarium ID: 1, nya
+2024-06-16 11:57:55,302 - INFO - Reading data from ../storage/aquarium_data_1.json, nya
+2024-06-16 11:57:55,309 - INFO - Fitting models for acidity, nya
+2024-06-16 11:57:55,312 - ERROR - Error in fit_and_predict: operands could not be broadcast together with shapes (4,) (12,) , nya
+2024-06-16 11:57:55,312 - INFO - Predicted values saved to ../storage/predicted_values_1.json, nya
+2024-06-16 11:59:34,689 - INFO - Script started, nya
+2024-06-16 12:00:10,741 - INFO - Script started, nya
+2024-06-16 12:00:10,742 - INFO - Aquarium ID: 1, nya
+2024-06-16 12:00:10,742 - INFO - Reading data from ../storage/aquarium_data_1.json, nya
+2024-06-16 12:00:10,742 - INFO - Fitting models for acidity, nya
+2024-06-16 12:00:10,748 - INFO - Fitting models for turbidity, nya
+2024-06-16 12:00:10,748 - INFO - Fitting models for flow, nya
+2024-06-16 12:00:10,749 - INFO - Fitting models for waterlevel, nya
+2024-06-16 12:00:10,749 - INFO - Model fitting and prediction completed, nya
+2024-06-16 12:00:10,753 - INFO - Predicted values saved to ../storage/predicted_values_1.json, nya
+2024-06-16 12:02:49,085 - INFO - Script started
+2024-06-16 12:02:49,085 - INFO - Aquarium ID: 1
+2024-06-16 12:02:49,086 - INFO - Reading data from ../storage/aquarium_data_1.json
+2024-06-16 12:02:49,086 - INFO - Fitting models for acidity
+2024-06-16 12:02:49,087 - INFO - Fitting models for turbidity
+2024-06-16 12:02:49,087 - INFO - Fitting models for flow
+2024-06-16 12:02:49,088 - INFO - Fitting models for waterlevel
+2024-06-16 12:02:49,088 - INFO - Model fitting and prediction completed
+2024-06-16 12:02:49,091 - INFO - Predicted values saved to ../storage/predicted_values_1.json
