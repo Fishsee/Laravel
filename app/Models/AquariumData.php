@@ -12,7 +12,6 @@ class AquariumData extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = ['aquarium_id', 'Acidity', 'Turbidity', 'Flow', 'Waterlevel'];
 
     protected $fillable = [
         'tempC',
@@ -22,7 +21,7 @@ class AquariumData extends Model
         'flow_rate',
         'phValue',
         'turbidity',
-        'aquarium_id' // Add aquarium_id to fillable fields
+        'aquarium_id'
     ];
 
     public function aquarium()
