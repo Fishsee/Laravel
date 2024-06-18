@@ -43,15 +43,17 @@ class DataController extends Controller
             }
 
             // Extract data for acidity, turbidity, flow, and waterlevel from the collection
-            $acidity = $aquariumData->pluck('Acidity')->toArray();
-            $turbidity = $aquariumData->pluck('Turbidity')->toArray();
-            $flow = $aquariumData->pluck('Flow')->toArray();
-            $waterlevel = $aquariumData->pluck('Waterlevel')->toArray();
+            $acidity = $aquariumData->pluck('phValue')->toArray();
+            $turbidity = $aquariumData->pluck('turbidity')->toArray();
+            $flow = $aquariumData->pluck('flow_rate')->toArray();
+            $waterlevel = $aquariumData->pluck('water_level')->toArray();
+            $temperature = $aquariumData->pluck('tempC')->toArray();
             $data = [
                 'acidity' => $acidity,
                 'turbidity' => $turbidity,
                 'flow' => $flow,
                 'waterlevel' => $waterlevel,
+                'temperature' => $temperature,
             ];
 
             // Prepare data and thresholds for processing
@@ -62,6 +64,7 @@ class DataController extends Controller
                     'turbidity' => 60,
                     'flow' => 50,
                     'waterlevel' => ['low' => 80, 'high' => 95],
+                    'temperature' => ['low' => 5, 'high' => 50],
                 ]
             ];
 
