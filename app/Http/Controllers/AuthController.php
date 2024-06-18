@@ -36,11 +36,15 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) 
-        {
-            $token = $request->user()->createToken('AuthToken')->plainTextToken;
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $token = $user->createToken('AuthToken')->plainTextToken;
+            $aquariumId = $user->aquariums()->first()->id ?? null; 
 
-            return response()->json(['token' => $token], 200);
+            return response()->json([
+                'token' => $token,
+                'aquarium_id' => $aquariumId
+            ], 200);
         }
 
         return response()->json(['error' => 'Unauthorized'], 401);
@@ -48,13 +52,10 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        if ($request->user()) 
-        {
+        if ($request->user()) {
             $request->user()->currentAccessToken()->delete();
             return response()->json(['message' => 'Successfully logged out'], 200);
-        } 
-        else 
-        {
+        } else {
             return response()->json(['message' => 'Failed to logout...'], 401);
         }
     }
@@ -69,10 +70,8 @@ class AuthController extends Controller
         $user = $request->user();
 
         if ($user) {
-            // Revoke the current access token
             $user->currentAccessToken()->delete();
 
-            // Generate a new access token
             $token = $user->createToken('AuthToken')->plainTextToken;
 
             // Return the new token to the client
