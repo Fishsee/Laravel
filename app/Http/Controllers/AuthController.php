@@ -39,11 +39,9 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $token = $user->createToken('AuthToken')->plainTextToken;
-            $aquariumId = $user->aquariums()->first()->id ?? null; 
 
             return response()->json([
-                'token' => $token,
-                'aquarium_id' => $aquariumId
+                'token' => $token
             ], 200);
         }
 
@@ -62,7 +60,13 @@ class AuthController extends Controller
 
     public function user(Request $request)
     {
-        return response()->json($request->user(), 200);
+        $user = $request->user();
+        $aquariumId = $user->aquariums()->first()->id ?? null;
+
+        return response()->json([
+            'user' => $user,
+            'aquarium_id' => $aquariumId
+        ], 200);
     }
 
     public function refresh(Request $request)
@@ -74,7 +78,6 @@ class AuthController extends Controller
 
             $token = $user->createToken('AuthToken')->plainTextToken;
 
-            // Return the new token to the client
             return response()->json(['token' => $token], 200);
         }
 
