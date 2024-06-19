@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('aquarium_id');
             $table->timestamps();
-
             $table->foreign('aquarium_id')->references('id')->on('aquaria')->onDelete('cascade');
         });
     }

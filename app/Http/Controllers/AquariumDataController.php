@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LiveData;
 use Illuminate\Http\Request;
 use App\Models\AquariumData;
 use Illuminate\Support\Facades\Auth;
@@ -9,6 +10,24 @@ use Illuminate\Support\Facades\DB;
 
 class AquariumDataController extends Controller
 {
+
+    public function postData(Request $request)
+    {
+        $validatedData = $request->validate([
+            'tempC' => 'required|numeric',
+            'distance_cm' => 'required|numeric',
+            'light_level' => 'required|numeric',
+            'water_level' => 'required|numeric',
+            'flow_rate' => 'required|numeric',
+            'phValue' => 'required|numeric',
+            'turbidity' => 'required|numeric',
+        ]);
+
+        $latestData = AquariumData::create($validatedData);
+
+        return response()->json($latestData);
+    }
+
     public function getAllPH($aquarium_id, Request $request)
     {
         $user = Auth::user();
@@ -18,8 +37,8 @@ class AquariumDataController extends Controller
         }
 
         $items = AquariumData::where('aquarium_id', $aquarium_id)
-            ->where('PH_Waarde', '>', 0)
-            ->get(['PH_Waarde']);
+            ->where('phValue', '>', 0)
+            ->get(['phValue']);
 
         if ($items->isEmpty()) {
             return response()->json([
@@ -43,9 +62,9 @@ class AquariumDataController extends Controller
         }
 
         $latestPH = AquariumData::where('aquarium_id', $aquarium_id)
-            ->where('PH_Waarde', '>', 0)
+            ->where('phValue', '>', 0)
             ->orderBy('created_at', 'desc')
-            ->first(['PH_Waarde']);
+            ->first(['phValue']);
 
         if (!$latestPH) {
             return response()->json([
@@ -60,6 +79,12 @@ class AquariumDataController extends Controller
         ]);
     }
 
+    public static function getArduinoIp()
+    {
+        $latestData = AquariumData::latest()->first();
+        return $latestData ? $latestData->ip : null;
+    }
+
     public function getDailyAveragePH($aquarium_id, Request $request, $date = null)
     {
         $user = Auth::user();
@@ -69,14 +94,14 @@ class AquariumDataController extends Controller
         }
 
         $query = AquariumData::where('aquarium_id', $aquarium_id)
-            ->where('PH_Waarde', '>', 0);
+            ->where('phValue', '>', 0);
 
         if ($date) {
             $parsedDate = date('Y-m-d', strtotime($date));
             $query->whereDate('created_at', $parsedDate);
 
             $averagePH = $query
-                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(PH_Waarde) as average_ph'))
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(phValue) as average_ph'))
                 ->groupBy('date')
                 ->first();
 
@@ -93,7 +118,7 @@ class AquariumDataController extends Controller
             ]);
         } else {
             $dailyAveragePH = $query
-                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(PH_Waarde) as average_ph'))
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(phValue) as average_ph'))
                 ->groupBy('date')
                 ->get();
 
@@ -112,7 +137,7 @@ class AquariumDataController extends Controller
     }
 
 
-    public function getAllTroebelheid($aquarium_id, Request $request)
+    public function getAllturbidity($aquarium_id, Request $request)
     {
         $user = Auth::user();
 
@@ -121,8 +146,8 @@ class AquariumDataController extends Controller
         }
 
         $items = AquariumData::where('aquarium_id', $aquarium_id)
-            ->where('Troebelheid', '>', 0)
-            ->get(['Troebelheid']);
+            ->where('turbidity', '>', 0)
+            ->get(['turbidity']);
 
         if ($items->isEmpty()) {
             return response()->json([
@@ -137,7 +162,7 @@ class AquariumDataController extends Controller
         ]);
     }
 
-    public function getLatestTroebelheid($aquarium_id, Request $request)
+    public function getLatestturbidity($aquarium_id, Request $request)
     {
         $user = Auth::user();
 
@@ -146,9 +171,9 @@ class AquariumDataController extends Controller
         }
 
         $latestTurbidity = AquariumData::where('aquarium_id', $aquarium_id)
-            ->where('Troebelheid', '>', 0)
+            ->where('turbidity', '>', 0)
             ->orderBy('created_at', 'desc')
-            ->first(['Troebelheid']);
+            ->first(['turbidity']);
 
         if (!$latestTurbidity) {
             return response()->json([
@@ -163,7 +188,7 @@ class AquariumDataController extends Controller
         ]);
     }
 
-    public function getDailyAverageTroebelheid($aquarium_id, Request $request, $date = null)
+    public function getDailyAverageturbidity($aquarium_id, Request $request, $date = null)
     {
         $user = Auth::user();
 
@@ -172,49 +197,49 @@ class AquariumDataController extends Controller
         }
 
         $query = AquariumData::where('aquarium_id', $aquarium_id)
-            ->where('Troebelheid', '>', 0);
+            ->where('turbidity', '>', 0);
 
         if ($date) {
             $parsedDate = date('Y-m-d', strtotime($date));
             $query->whereDate('created_at', $parsedDate);
 
-            $averageTroebelheid = $query
-                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(Troebelheid) as average_troebelheid'))
+            $averageturbidity = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(turbidity) as average_turbidity'))
                 ->groupBy('date')
                 ->first();
 
-            if (!$averageTroebelheid) {
+            if (!$averageturbidity) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'No troebelheid values found for aquarium ID ' . $aquarium_id . ' on date ' . $parsedDate
+                    'message' => 'No turbidity values found for aquarium ID ' . $aquarium_id . ' on date ' . $parsedDate
                 ], 404);
             }
 
             return response()->json([
                 'status' => 'success',
-                'data' => $averageTroebelheid
+                'data' => $averageturbidity
             ]);
         } else {
-            $dailyAverageTroebelheid = $query
-                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(Troebelheid) as average_troebelheid'))
+            $dailyAverageturbidity = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(turbidity) as average_turbidity'))
                 ->groupBy('date')
                 ->get();
 
-            if ($dailyAverageTroebelheid->isEmpty()) {
+            if ($dailyAverageturbidity->isEmpty()) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'No troebelheid values found for aquarium ID ' . $aquarium_id
+                    'message' => 'No turbidity values found for aquarium ID ' . $aquarium_id
                 ], 404);
             }
 
             return response()->json([
                 'status' => 'success',
-                'data' => $dailyAverageTroebelheid
+                'data' => $dailyAverageturbidity
             ]);
         }
     }
 
-    public function getAllStroming($aquarium_id, Request $request)
+    public function getAllflow_rate($aquarium_id, Request $request)
     {
         $user = Auth::user();
 
@@ -223,8 +248,8 @@ class AquariumDataController extends Controller
         }
 
         $items = AquariumData::where('aquarium_id', $aquarium_id)
-            ->where('Stroming', '>', 0)
-            ->get(['Stroming']);
+            ->where('flow_rate', '>', 0)
+            ->get(['flow_rate']);
 
         if ($items->isEmpty()) {
             return response()->json([
@@ -239,7 +264,7 @@ class AquariumDataController extends Controller
         ]);
     }
 
-    public function getLatestStroming($aquarium_id, Request $request)
+    public function getLatestflow_rate($aquarium_id, Request $request)
     {
         $user = Auth::user();
 
@@ -248,9 +273,9 @@ class AquariumDataController extends Controller
         }
 
         $latestCurrent = AquariumData::where('aquarium_id', $aquarium_id)
-            ->where('Stroming', '>', 0)
+            ->where('flow_rate', '>', 0)
             ->orderBy('created_at', 'desc')
-            ->first(['Stroming']);
+            ->first(['flow_rate']);
 
         if (!$latestCurrent) {
             return response()->json([
@@ -265,7 +290,7 @@ class AquariumDataController extends Controller
         ]);
     }
 
-    public function getDailyAverageStroming($aquarium_id, Request $request, $date = null)
+    public function getDailyAverageflow_rate($aquarium_id, Request $request, $date = null)
     {
         $user = Auth::user();
 
@@ -274,49 +299,49 @@ class AquariumDataController extends Controller
         }
 
         $query = AquariumData::where('aquarium_id', $aquarium_id)
-            ->where('Stroming', '>', 0);
+            ->where('flow_rate', '>', 0);
 
         if ($date) {
             $parsedDate = date('Y-m-d', strtotime($date));
             $query->whereDate('created_at', $parsedDate);
 
-            $averageStroming = $query
-                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(Stroming) as average_stroming'))
+            $averageflow_rate = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(flow_rate) as average_flow_rate'))
                 ->groupBy('date')
                 ->first();
 
-            if (!$averageStroming) {
+            if (!$averageflow_rate) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'No stroming values found for aquarium ID ' . $aquarium_id . ' on date ' . $parsedDate
+                    'message' => 'No flow_rate values found for aquarium ID ' . $aquarium_id . ' on date ' . $parsedDate
                 ], 404);
             }
 
             return response()->json([
                 'status' => 'success',
-                'data' => $averageStroming
+                'data' => $averageflow_rate
             ]);
         } else {
-            $dailyAverageStroming = $query
-                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(Stroming) as average_stroming'))
+            $dailyAverageflow_rate = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(flow_rate) as average_flow_rate'))
                 ->groupBy('date')
                 ->get();
 
-            if ($dailyAverageStroming->isEmpty()) {
+            if ($dailyAverageflow_rate->isEmpty()) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'No stroming values found for aquarium ID ' . $aquarium_id
+                    'message' => 'No flow_rate values found for aquarium ID ' . $aquarium_id
                 ], 404);
             }
 
             return response()->json([
                 'status' => 'success',
-                'data' => $dailyAverageStroming
+                'data' => $dailyAverageflow_rate
             ]);
         }
     }
 
-    public function getAllWaterLevel($aquarium_id, Request $request)
+    public function getAllwater_level($aquarium_id, Request $request)
     {
         $user = Auth::user();
 
@@ -325,8 +350,8 @@ class AquariumDataController extends Controller
         }
 
         $items = AquariumData::where('aquarium_id', $aquarium_id)
-            ->where('Waterlevel', '>', 0)
-            ->get(['Waterlevel']);
+            ->where('water_level', '>', 0)
+            ->get(['water_level']);
 
         if ($items->isEmpty()) {
             return response()->json([
@@ -341,7 +366,7 @@ class AquariumDataController extends Controller
         ]);
     }
 
-    public function getLatestWaterLevel($aquarium_id, Request $request)
+    public function getLatestwater_level($aquarium_id, Request $request)
     {
         $user = Auth::user();
 
@@ -349,12 +374,12 @@ class AquariumDataController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
         }
 
-        $latestWaterLevel = AquariumData::where('aquarium_id', $aquarium_id)
-            ->where('Waterlevel', '>', 0)
+        $latestwater_level = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('water_level', '>', 0)
             ->orderBy('created_at', 'desc')
-            ->first(['Waterlevel']);
+            ->first(['water_level']);
 
-        if (!$latestWaterLevel) {
+        if (!$latestwater_level) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'No water level found for aquarium ID ' . $aquarium_id
@@ -363,11 +388,11 @@ class AquariumDataController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $latestWaterLevel
+            'data' => $latestwater_level
         ]);
     }
 
-    public function getDailyAverageWaterLevel($aquarium_id, Request $request, $date = null)
+    public function getDailyAveragewater_level($aquarium_id, Request $request, $date = null)
     {
         $user = Auth::user();
 
@@ -376,18 +401,18 @@ class AquariumDataController extends Controller
         }
 
         $query = AquariumData::where('aquarium_id', $aquarium_id)
-            ->where('Waterlevel', '>', 0);
+            ->where('water_level', '>', 0);
 
         if ($date) {
             $parsedDate = date('Y-m-d', strtotime($date));
             $query->whereDate('created_at', $parsedDate);
 
-            $averageWaterLevel = $query
-                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(Waterlevel) as average_water_level'))
+            $averagewater_level = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(water_level) as average_water_level'))
                 ->groupBy('date')
                 ->first();
 
-            if (!$averageWaterLevel) {
+            if (!$averagewater_level) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'No water level values found for aquarium ID ' . $aquarium_id . ' on date ' . $parsedDate
@@ -396,15 +421,15 @@ class AquariumDataController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'data' => $averageWaterLevel
+                'data' => $averagewater_level
             ]);
         } else {
-            $dailyAverageWaterLevel = $query
-                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(Waterlevel) as average_water_level'))
+            $dailyAveragewater_level = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(water_level) as average_water_level'))
                 ->groupBy('date')
                 ->get();
 
-            if ($dailyAverageWaterLevel->isEmpty()) {
+            if ($dailyAveragewater_level->isEmpty()) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'No water level values found for aquarium ID ' . $aquarium_id
@@ -413,7 +438,313 @@ class AquariumDataController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'data' => $dailyAverageWaterLevel
+                'data' => $dailyAveragewater_level
+            ]);
+        }
+    }
+
+    public function getAllTemperatures($aquarium_id, Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
+        $items = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('tempC', '>', 0)
+            ->get(['tempC']);
+
+        if ($items->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No temperature values found for aquarium ID ' . $aquarium_id
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $items
+        ]);
+    }
+
+    public function getLatestTemperature($aquarium_id, Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
+        $latestTemperature = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('tempC', '>', 0)
+            ->orderBy('created_at', 'desc')
+            ->first(['tempC']);
+
+        if (!$latestTemperature) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No temperature value found for aquarium ID ' . $aquarium_id
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $latestTemperature
+        ]);
+    }
+
+    public function getDailyAverageTemperature($aquarium_id, Request $request, $date = null)
+    {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
+        $query = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('tempC', '>', 0);
+
+        if ($date) {
+            $parsedDate = date('Y-m-d', strtotime($date));
+            $query->whereDate('created_at', $parsedDate);
+
+            $averageTemperature = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(tempC) as average_temperature'))
+                ->groupBy('date')
+                ->first();
+
+            if (!$averageTemperature) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No temperature values found for aquarium ID ' . $aquarium_id . ' on date ' . $parsedDate
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $averageTemperature
+            ]);
+        } else {
+            $dailyAverageTemperature = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(tempC) as average_temperature'))
+                ->groupBy('date')
+                ->get();
+
+            if ($dailyAverageTemperature->isEmpty()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No temperature values found for aquarium ID ' . $aquarium_id
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $dailyAverageTemperature
+            ]);
+        }
+    }
+
+    public function getAllDistances($aquarium_id, Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
+        $items = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('distance_cm', '>', 0)
+            ->get(['distance_cm']);
+
+        if ($items->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No distance values found for aquarium ID ' . $aquarium_id
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $items
+        ]);
+    }
+
+    public function getLatestDistance($aquarium_id, Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
+        $latestDistance = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('distance_cm', '>', 0)
+            ->orderBy('created_at', 'desc')
+            ->first(['distance_cm']);
+
+        if (!$latestDistance) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No distance value found for aquarium ID ' . $aquarium_id
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $latestDistance
+        ]);
+    }
+
+    public function getDailyAverageDistance($aquarium_id, Request $request, $date = null)
+    {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
+        $query = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('distance_cm', '>', 0);
+
+        if ($date) {
+            $parsedDate = date('Y-m-d', strtotime($date));
+            $query->whereDate('created_at', $parsedDate);
+
+            $averageDistance = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(distance_cm) as average_distance'))
+                ->groupBy('date')
+                ->first();
+
+            if (!$averageDistance) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No distance values found for aquarium ID ' . $aquarium_id . ' on date ' . $parsedDate
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $averageDistance
+            ]);
+        } else {
+            $dailyAverageDistance = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(distance_cm) as average_distance'))
+                ->groupBy('date')
+                ->get();
+
+            if ($dailyAverageDistance->isEmpty()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No distance values found for aquarium ID ' . $aquarium_id
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $dailyAverageDistance
+            ]);
+        }
+    }
+
+    public function getAllLightLevels($aquarium_id, Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
+        $items = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('light_level', '>', 0)
+            ->get(['light_level']);
+
+        if ($items->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No light level values found for aquarium ID ' . $aquarium_id
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $items
+        ]);
+    }
+
+    public function getLatestLightLevel($aquarium_id, Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
+        $latestLightLevel = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('light_level', '>', 0)
+            ->orderBy('created_at', 'desc')
+            ->first(['light_level']);
+
+        if (!$latestLightLevel) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No light level value found for aquarium ID ' . $aquarium_id
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $latestLightLevel
+        ]);
+    }
+
+    public function getDailyAverageLightLevel($aquarium_id, Request $request, $date = null)
+    {
+        $user = Auth::user();
+
+        if (!$user->aquariums()->where('id', $aquarium_id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'Unauthorized'], 403);
+        }
+
+        $query = AquariumData::where('aquarium_id', $aquarium_id)
+            ->where('light_level', '>', 0);
+
+        if ($date) {
+            $parsedDate = date('Y-m-d', strtotime($date));
+            $query->whereDate('created_at', $parsedDate);
+
+            $averageLightLevel = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(light_level) as average_light_level'))
+                ->groupBy('date')
+                ->first();
+
+            if (!$averageLightLevel) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No light level values found for aquarium ID ' . $aquarium_id . ' on date ' . $parsedDate
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $averageLightLevel
+            ]);
+        } else {
+            $dailyAverageLightLevel = $query
+                ->select(DB::raw('DATE(created_at) as date'), DB::raw('AVG(light_level) as average_light_level'))
+                ->groupBy('date')
+                ->get();
+
+            if ($dailyAverageLightLevel->isEmpty()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No light level values found for aquarium ID ' . $aquarium_id
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $dailyAverageLightLevel
             ]);
         }
     }
