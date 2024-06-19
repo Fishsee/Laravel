@@ -21,7 +21,6 @@ class AquariumDataController extends Controller
             'flow_rate' => 'required|numeric',
             'phValue' => 'required|numeric',
             'turbidity' => 'required|numeric',
-            'ip' => 'required|ip',
         ]);
 
         $latestData = AquariumData::create($validatedData);

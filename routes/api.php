@@ -19,7 +19,6 @@ Route::get('/brightness', function () {
     return response()->json(['brightness' => 70]);
 });
 Route::post('/set-brightness', [BrightnessController::class, 'setBrightness']);
-Route::post('/arduino-ip', [ArduinoController::class, 'storeIp']);
 
 //Route::post('/data-send', [AquariumDataController::class, 'postData']);
 // Routes protected by Sanctum middleware
