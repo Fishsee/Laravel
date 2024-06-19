@@ -21,7 +21,8 @@ class AquariumData extends Model
         'flow_rate',
         'phValue',
         'turbidity',
-        'aquarium_id'
+        'aquarium_id',
+        'ip'
     ];
 
     public function aquarium()

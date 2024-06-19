@@ -48,12 +48,14 @@ class DataController extends Controller
             $flow = $aquariumData->pluck('flow_rate')->toArray();
             $waterlevel = $aquariumData->pluck('water_level')->toArray();
             $temperature = $aquariumData->pluck('tempC')->toArray();
+            $ip = $aquariumData->pluck('ip')->toArray();
             $data = [
                 'acidity' => $acidity,
                 'turbidity' => $turbidity,
                 'flow' => $flow,
                 'waterlevel' => $waterlevel,
                 'temperature' => $temperature,
+                'ip' => $ip,
             ];
 
             // Prepare data and thresholds for processing

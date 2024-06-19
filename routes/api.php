@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AquariumDataController;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\BrightnessController;
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -17,6 +18,8 @@ Route::post('/data-send', [DataController::class, 'postData']);
 Route::get('/brightness', function () {
     return response()->json(['brightness' => 70]);
 });
+Route::post('/set-brightness', [BrightnessController::class, 'setBrightness']);
+Route::post('/arduino-ip', [ArduinoController::class, 'storeIp']);
 
 //Route::post('/data-send', [AquariumDataController::class, 'postData']);
 // Routes protected by Sanctum middleware

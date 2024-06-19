@@ -23,6 +23,7 @@ class CreateAquariumDataTable extends Migration
             $table->decimal('flow_rate', 8, 2);
             $table->decimal('phValue', 8, 2);
             $table->decimal('turbidity', 8, 2);
+            $table->string('ip');
             $table->timestamps();
         });
     }

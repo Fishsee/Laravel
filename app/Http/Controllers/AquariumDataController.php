@@ -21,6 +21,7 @@ class AquariumDataController extends Controller
             'flow_rate' => 'required|numeric',
             'phValue' => 'required|numeric',
             'turbidity' => 'required|numeric',
+            'ip' => 'required|ip',
         ]);
 
         $latestData = AquariumData::create($validatedData);
@@ -77,6 +78,12 @@ class AquariumDataController extends Controller
             'status' => 'success',
             'data' => $latestPH
         ]);
+    }
+
+    public static function getArduinoIp()
+    {
+        $latestData = AquariumData::latest()->first();
+        return $latestData ? $latestData->ip : null;
     }
 
     public function getDailyAveragePH($aquarium_id, Request $request, $date = null)
