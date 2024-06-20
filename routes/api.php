@@ -15,9 +15,10 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/data-recieve', [DataController::class, 'getData']);
 Route::post('/data-send', [DataController::class, 'postData']);
 
-// Temporary route for brightness testing for arduino
+// Temporary route for brightness testing for arduino2
 Route::get('/brightness', function () {
-    return response()->json(['brightness' => 75]);
+    return response()->json(['brightness' => 75,
+                                '1']);
 });
 Route::post('/set-brightness', [BrightnessController::class, 'setBrightness']);
 
