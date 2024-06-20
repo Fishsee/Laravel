@@ -748,5 +748,44 @@ class AquariumDataController extends Controller
             ]);
         }
     }
+
+    // Other methods...
+
+    /**
+     * Sets the brightness of the aquarium's light.
+     *
+     * @param int $brightness Level of brightness (0, 25, 50, 75, 100)
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function setBrightness($brightness)
+    {
+        // Validate the brightness input
+        if (!in_array($brightness, [0, 25, 50, 75, 100])) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid brightness value. Allowed values are 0, 25, 50, 75, 100.'
+            ], 400);
+        }
+
+        // Logic to send the brightness level to the hardware, e.g., an Arduino
+        // This is a placeholder for the actual hardware interaction code
+        // $result = $this->sendBrightnessToHardware($brightness);
+
+        // Simulate a success response (replace this with actual result handling)
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'brightness' => $brightness,
+                'message' => 'Brightness level set successfully.'
+            ]
+        ]);
+    }
+
+    // Example method that would interface with hardware
+    // protected function sendBrightnessToHardware($brightness)
+    // {
+    //     // Your code to communicate with the Arduino or other hardware
+    //     // This could involve sending an HTTP request, using GPIO pins, etc.
+    // }
 }
 

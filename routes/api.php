@@ -15,10 +15,14 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/data-recieve', [DataController::class, 'getData']);
 Route::post('/data-send', [DataController::class, 'postData']);
 
+// Temporary route for brightness testing for arduino
 Route::get('/brightness', function () {
-    return response()->json(['brightness' => 70]);
+    return response()->json(['brightness' => 75]);
 });
 Route::post('/set-brightness', [BrightnessController::class, 'setBrightness']);
+
+Route::post('/aquarium/{aquarium_id}/set-brightness', [AquariumDataController::class, 'setBrightness']);
+
 
 //Route::post('/data-send', [AquariumDataController::class, 'postData']);
 // Routes protected by Sanctum middleware
@@ -53,7 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/last-temperature/{aquarium_id}', [AquariumDataController::class, 'getLatestTemperature'])->name('last-temperature');
     Route::get('/average-temperature/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageTemperature'])->name('average-temperature');
 
-    // Routes for distance data 
+    // Routes for distance data
     Route::get('/all-distance/{aquarium_id}', [AquariumDataController::class, 'getAllDistances'])->name('all-distance');
     Route::get('/last-distance/{aquarium_id}', [AquariumDataController::class, 'getLatestDistance'])->name('last-distance');
     Route::get('/average-distance/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageDistance'])->name('average-distance');
