@@ -18,7 +18,7 @@ Route::post('/data-send', [DataController::class, 'postData']);
 // Temporary route for brightness testing for arduino2
 Route::get('/brightness', function () {
     return response()->json(['brightness' => 75,
-                                '1']);
+                                'Servo' => 1]);
 });
 Route::post('/set-brightness', [BrightnessController::class, 'setBrightness']);
 
