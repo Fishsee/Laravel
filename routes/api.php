@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AquariumDataController;
+use App\Http\Controllers\ArduinoController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\BrightnessController;
 
@@ -15,12 +16,13 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/data-recieve', [DataController::class, 'getData']);
 Route::post('/data-send', [DataController::class, 'postData']);
 
-Route::get('/brightness', function () {
-    return response()->json(['brightness' => 70]);
-});
-Route::post('/set-brightness', [BrightnessController::class, 'setBrightness']);
 
-//Route::post('/data-send', [AquariumDataController::class, 'postData']);
+// Should be protected by middleware but due to limitations from the Arduino we temporarily decided to not use it.
+Route::get('/arduino-control/{action}', [ArduinoController::class, 'handleRequest'])
+        ->where('action', '^(toggleLight|dropPHTablet|dropFood|)$');
+Route::post('/set-brightness', [BrightnessController::class, 'setBrightness']);
+Route::post('/aquarium/{aquarium_id}/set-brightness', [AquariumDataController::class, 'setBrightness']);
+
 // Routes protected by Sanctum middleware
 Route::middleware('auth:sanctum')->group(function () {
     // Routes accessible only to authenticated users
@@ -53,7 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/last-temperature/{aquarium_id}', [AquariumDataController::class, 'getLatestTemperature'])->name('last-temperature');
     Route::get('/average-temperature/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageTemperature'])->name('average-temperature');
 
-    // Routes for distance data 
+    // Routes for distance data
     Route::get('/all-distance/{aquarium_id}', [AquariumDataController::class, 'getAllDistances'])->name('all-distance');
     Route::get('/last-distance/{aquarium_id}', [AquariumDataController::class, 'getLatestDistance'])->name('last-distance');
     Route::get('/average-distance/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageDistance'])->name('average-distance');
@@ -63,11 +65,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/last-light-level/{aquarium_id}', [AquariumDataController::class, 'getLatestLightLevel'])->name('last-light-level');
     Route::get('/average-light-level/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageLightLevel'])->name('average-light-level');
 
-    //Route for checking and adjusting conditions fish
+    // Route for checking and adjusting conditions for fish
     Route::get('/aquarium/{aquariumId}/check-conditions', [ConditionsController::class, 'checkConditions']);
     Route::get('/aquarium/{aquariumId}/drop-ph-tablet', [ConditionsController::class, 'dropPHTablet']);
 
-    //Route for predicted data
+    // Route for predicted data
     Route::post('/process-data/{id}', [DataController::class, 'processAndRetrieveData']);
 });
 

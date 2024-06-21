@@ -9,7 +9,11 @@ class Aquarium extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id'];
+    protected $fillable = ['user_id', 'pump_state'];
+
+    protected $casts = [
+        'pump_state' => 'boolean',
+    ];
 
     public function user()
     {
