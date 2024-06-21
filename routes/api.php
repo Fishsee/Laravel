@@ -17,10 +17,10 @@ Route::get('/data-recieve', [DataController::class, 'getData']);
 Route::post('/data-send', [DataController::class, 'postData']);
 
 // Temporary route for brightness testing for arduino2
-Route::get('/arduino-control', function () {
-    return response()->json(['brightness' => 100, 'pH' => 'ph', 'food' => 'food', 'pump' => true]);
-
-});
+//Route::get('/arduino-control', function () {
+//    return response()->json(['brightness' => 100, 'pH' => 'ph', 'food' => 'food', 'pump' => true]);
+//
+//});
 
 Route::get('/toggle-light', [ArduinoController::class, 'toggleLight']);
 
