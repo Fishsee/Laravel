@@ -22,10 +22,8 @@ Route::post('/data-send', [DataController::class, 'postData']);
 //
 //});
 
-Route::get('/arduino-control', [ArduinoController::class, 'toggleLight']);
-Route::get('/arduino-control', [ArduinoController::class, 'dropPHTablet']);
-Route::get('/arduino-control', [ArduinoController::class, 'dropFood']);
-
+Route::get('/arduino-control/{action}', [ArduinoController::class, 'handleRequest'])
+    ->where('action', '^(toggleLight|dropPHTablet|dropFood)$');
 
 
 Route::get('/predict', function () {

@@ -7,37 +7,41 @@ use Illuminate\Http\Response;
 
 class ArduinoController extends Controller
 {
-    /**
-     * Adjust the aquarium lights' brightness based on the light level and return a JSON response.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function toggleLight()
+    public function handleRequest($action)
+    {
+        $response = ['pH' => null, 'food' => null, 'brightness' => null];
+
+        switch ($action) {
+            case 'toggleLight':
+                $response['brightness'] = $this->toggleLight();
+                break;
+            case 'dropPHTablet':
+                $response['pH'] = $this->dropPHTablet();
+                break;
+            case 'dropFood':
+                $response['food'] = $this->dropFood();
+                break;
+        }
+
+        return response()->json($response);
+    }
+
+    protected function toggleLight()
     {
         $latestData = AquariumData::latest()->first();
-
         if ($latestData) {
-            if ($latestData->light_level <= 100) {
-                return response()->json(['brightness' => 100]);
-            } else {
-                return response()->json(['brightness' => 0]);
-            }
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'No data available.'
-            ], Response::HTTP_NOT_FOUND);
+            return $latestData->light_level <= 100 ? 100 : 0;
         }
+        return null;
     }
 
-    public function dropPHTablet(){
-        return response()->json(['pH' => 'ph']);
-
+    protected function dropPHTablet()
+    {
+        return 'ph';
     }
 
-    public function dropFood(){
-        return response()->json(['food' => 'food']);
-
+    protected function dropFood()
+    {
+        return 'food';
     }
-
 }
