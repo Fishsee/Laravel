@@ -17,12 +17,12 @@ Route::post('/data-send', [DataController::class, 'postData']);
 
 // Temporary route for brightness testing for arduino2
 Route::get('/arduino-control', function () {
-    return response()->json(['brightness' => 25,
-                                'Servo' => 1]);
+    return response()->json(['brightness' => 25, 'Servo' => 1]);
 });
 
 Route::get('/predict', function () {
-    return response()->json([
+    // Predicted values
+    $predicted = [
         "acidity" => [
             "predicted_values" => [4.2, 4.19, 4.18, 4.16, 4.15, 4.13, 4.12, 4.1, 4.09, 4.08, 4.06, 4.05],
             "correlation_type" => "exponential",
@@ -43,16 +43,62 @@ Route::get('/predict', function () {
             "warning" => "The low threshold for waterlevel has already been exceeded.",
             "time_until_exceed" => -13.33
         ]
+    ];
+
+    // Normalization function
+    function normalize($value, $min, $max) {
+        if ($value < $min) return 0;
+        if ($value > $max) return 1;
+        return ($value - $min) / ($max - $min);
+    }
+
+    // Calculate the average of predicted values
+    function average($values) {
+        return array_sum($values) / count($values);
+    }
+
+    // Get the latest predicted values
+    $latest_values = [
+        "acidity" => $predicted["acidity"]["predicted_values"][0],
+        "turbidity" => $predicted["turbidity"]["predicted_values"][0],
+        "flow" => $predicted["flow"]["predicted_values"][0],
+        "waterlevel" => $predicted["waterlevel"]["predicted_values"][0]
+    ];
+
+    // Normalize the values
+    $normalized = [
+        "acidity" => normalize($latest_values["acidity"], 6.5, 8.5),
+        "turbidity" => normalize($latest_values["turbidity"], 0, 10),
+        "flow" => normalize($latest_values["flow"], 10, 100),
+        "waterlevel" => normalize($latest_values["waterlevel"], 0, 50)
+    ];
+
+    // Weights for WQI calculation
+    $weights = [
+        "acidity" => 0.4,
+        "turbidity" => 0.4,
+        "flow" => 0.15,
+        "waterlevel" => 0.05
+    ];
+
+    // Calculate WQI
+    $wqi = ($normalized["acidity"] * $weights["acidity"]) +
+        ($normalized["turbidity"] * $weights["turbidity"]) +
+        ($normalized["flow"] * $weights["flow"]) +
+        ($normalized["waterlevel"] * $weights["waterlevel"]);
+
+    return response()->json([
+        "acidity" => $predicted["acidity"],
+        "turbidity" => $predicted["turbidity"],
+        "flow" => $predicted["flow"],
+        "waterlevel" => $predicted["waterlevel"],
+        "wqi" => round($wqi, 2) // round to 2 decimal places
     ]);
 });
 
-
 Route::post('/set-brightness', [BrightnessController::class, 'setBrightness']);
-
 Route::post('/aquarium/{aquarium_id}/set-brightness', [AquariumDataController::class, 'setBrightness']);
 
-
-//Route::post('/data-send', [AquariumDataController::class, 'postData']);
 // Routes protected by Sanctum middleware
 Route::middleware('auth:sanctum')->group(function () {
     // Routes accessible only to authenticated users
@@ -91,15 +137,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/average-distance/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageDistance'])->name('average-distance');
 
     // Routes for light level data
-        Route::get('/all-light-level/{aquarium_id}', [AquariumDataController::class, 'getAllLightLevels'])->name('all-light-level');
+    Route::get('/all-light-level/{aquarium_id}', [AquariumDataController::class, 'getAllLightLevels'])->name('all-light-level');
     Route::get('/last-light-level/{aquarium_id}', [AquariumDataController::class, 'getLatestLightLevel'])->name('last-light-level');
     Route::get('/average-light-level/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageLightLevel'])->name('average-light-level');
 
-    //Route for checking and adjusting conditions fish
+    // Route for checking and adjusting conditions for fish
     Route::get('/aquarium/{aquariumId}/check-conditions', [ConditionsController::class, 'checkConditions']);
     Route::get('/aquarium/{aquariumId}/drop-ph-tablet', [ConditionsController::class, 'dropPHTablet']);
 
-    //Route for predicted data
+    // Route for predicted data
     Route::post('/process-data/{id}', [DataController::class, 'processAndRetrieveData']);
 });
 
