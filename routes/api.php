@@ -16,15 +16,15 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/data-recieve', [DataController::class, 'getData']);
 Route::post('/data-send', [DataController::class, 'postData']);
 
-Route::get('/arduino-control', function () {
-    return response()->json(['brightness' => 100, 'pH' => 'ph', 'food' => 'food', 'pump' => true]);
-
-});
-
-//Route::get('/arduino-control/{action}', [ArduinoController::class, 'handleRequest'])
-//        ->where('action', '^(toggleLight|dropPHTablet|dropFood|togglePump)$');
+//Route::get('/arduino-control', function () {
+//    return response()->json(['brightness' => 100, 'pH' => 'ph', 'food' => 'food', 'pump' => true]);
 //
-//
+//});
+
+Route::get('/arduino-control/{action}', [ArduinoController::class, 'handleRequest'])
+        ->where('action', '^(toggleLight|dropPHTablet|dropFood|togglePump)$');
+
+
 //Route::get('/get-my-json', function () {
 //    return response()->file(public_path('data.json'));
 //});

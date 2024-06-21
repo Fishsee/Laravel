@@ -15,7 +15,7 @@ class ArduinoController extends Controller
      */
     public function handleRequest($action)
     {
-        $response = ['pH' => null, 'food' => null, 'brightness' => null];
+        $response = ['brightness' => null, 'pH' => null, 'food' => null, 'pump' => null];
 
         switch ($action) {
             case 'toggleLight':
@@ -31,8 +31,7 @@ class ArduinoController extends Controller
                 $response['pump'] = $this->togglePump();
                 break;
             default:
-                $response['error'] = 'Unknown action';
-                break;
+                return response()->json(['error' => 'Unknown action'], 400);
         }
 
         return response()->json($response);
@@ -41,15 +40,19 @@ class ArduinoController extends Controller
     /**
      * Toggles the light on or off based on the current light level.
      *
-     * @return int|null Returns the new light level or null if no data available.
+     * @return int Returns the new light level (100 if turned on, 0 if turned off).
      */
     protected function toggleLight()
     {
-        $latestData = Aquaria::latest()->first();
-        if ($latestData) {
-            return $latestData->light_level <= 100 ? 100 : 0;
+        // Simulation of toggling the light based on some logic
+        $latestData = Aquarium::latest()->first();
+        if ($latestData && $latestData->light_level <= 100) {
+            $latestData->light_level = 0;
+        } else {
+            $latestData->light_level = 100;
         }
-        return null;
+        $latestData->save();
+        return $latestData->light_level;
     }
 
     /**
@@ -59,7 +62,7 @@ class ArduinoController extends Controller
      */
     protected function dropPHTablet()
     {
-        return 'ph';
+        return 'ph'; // Simple static return for simulation purposes
     }
 
     /**
@@ -69,30 +72,23 @@ class ArduinoController extends Controller
      */
     protected function dropFood()
     {
-        return 'food';
+        return 'food'; // Simple static return for simulation purposes
     }
 
     /**
      * Toggles the pump state.
      *
-     * @return bool Returns the new pump state.
+     * @return bool Returns the new pump state (true or false).
      */
     protected function togglePump()
     {
-        // Attempt to find the record with ID 1
-        $aquarium = Aquarium::find(1);
+        $aquarium = Aquarium::find(1); // Assume there's always an Aquarium with ID 1 for simplicity
 
-        if (!$aquarium) {
-            // If the aquarium does not exist, handle this case appropriately (maybe log an error or throw an exception)
-            return false; // Or handle it in another way that fits your application
+        if ($aquarium) {
+            $aquarium->pump_state = !$aquarium->pump_state; // Toggle the state
+            $aquarium->save();
+            return $aquarium->pump_state;
         }
-
-        // Toggle the pump state
-        $newState = !$aquarium->pump_state;
-        $aquarium->pump_state = $newState;
-        $aquarium->save();
-
-        return $newState;
+        return false; // Default return if no aquarium is found
     }
-
 }
