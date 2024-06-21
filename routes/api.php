@@ -20,6 +20,33 @@ Route::get('/arduino-control', function () {
     return response()->json(['brightness' => 25,
                                 'Servo' => 1]);
 });
+
+Route::get('/predict', function () {
+    return response()->json([
+        "acidity" => [
+            "predicted_values" => [4.2, 4.19, 4.18, 4.16, 4.15, 4.13, 4.12, 4.1, 4.09, 4.08, 4.06, 4.05],
+            "correlation_type" => "exponential",
+            "warning" => "The low threshold for acidity has already been exceeded.",
+            "time_until_exceed" => -18.66
+        ],
+        "turbidity" => [
+            "predicted_values" => [49.68, 49.55, 49.41, 49.27, 49.14, 49.0, 48.87, 48.73, 48.6, 48.47, 48.33, 48.2],
+            "correlation_type" => "exponential"
+        ],
+        "flow" => [
+            "predicted_values" => [68.39, 71.05, 73.82, 76.7, 79.69, 82.8, 86.02, 89.38, 92.86, 96.48, 100.24, 104.15],
+            "correlation_type" => "exponential"
+        ],
+        "waterlevel" => [
+            "predicted_values" => [38.46, 36.12, 33.92, 31.86, 29.92, 28.1, 26.39, 24.79, 23.28, 21.87, 20.54, 19.29],
+            "correlation_type" => "exponential",
+            "warning" => "The low threshold for waterlevel has already been exceeded.",
+            "time_until_exceed" => -13.33
+        ]
+    ]);
+});
+
+
 Route::post('/set-brightness', [BrightnessController::class, 'setBrightness']);
 
 Route::post('/aquarium/{aquarium_id}/set-brightness', [AquariumDataController::class, 'setBrightness']);
@@ -64,7 +91,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/average-distance/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageDistance'])->name('average-distance');
 
     // Routes for light level data
-    Route::get('/all-light-level/{aquarium_id}', [AquariumDataController::class, 'getAllLightLevels'])->name('all-light-level');
+        Route::get('/all-light-level/{aquarium_id}', [AquariumDataController::class, 'getAllLightLevels'])->name('all-light-level');
     Route::get('/last-light-level/{aquarium_id}', [AquariumDataController::class, 'getLatestLightLevel'])->name('last-light-level');
     Route::get('/average-light-level/{aquarium_id}/{date?}', [AquariumDataController::class, 'getDailyAverageLightLevel'])->name('average-light-level');
 
