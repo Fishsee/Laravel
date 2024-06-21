@@ -16,14 +16,32 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/data-recieve', [DataController::class, 'getData']);
 Route::post('/data-send', [DataController::class, 'postData']);
 
-// Temporary route for brightness testing for arduino2
-//Route::get('/arduino-control', function () {
-//    return response()->json(['brightness' => 100, 'pH' => 'ph', 'food' => 'food', 'pump' => true]);
+Route::get('/arduino-control', function () {
+    return response()->json(['brightness' => 100, 'pH' => 'ph', 'food' => 'food', 'pump' => true]);
+
+});
+
+//Route::get('/arduino-control/{action}', [ArduinoController::class, 'handleRequest'])
+//        ->where('action', '^(toggleLight|dropPHTablet|dropFood|togglePump)$');
 //
+//
+//Route::get('/get-my-json', function () {
+//    return response()->file(public_path('data.json'));
 //});
 
-Route::get('/arduino-control/{action}', [ArduinoController::class, 'handleRequest'])
-        ->where('action', '^(toggleLight|dropPHTablet|dropFood|togglePump)$');
+
+Route::post('/update-my-json', function (Request $request) {
+    $data = $request->all(); // Get all input data
+    $path = public_path('data.json');
+    $jsonString = file_get_contents($path);
+    $jsonContent = json_decode($jsonString, true);
+
+    // Update the data here. For example:
+    $jsonContent['key'] = $data['key']; // Make sure to validate and sanitize!
+
+    file_put_contents($path, json_encode($jsonContent, JSON_PRETTY_PRINT)); // Write back to the file
+    return response()->json(['success' => true, 'message' => 'JSON updated!']);
+});
 
 
 
