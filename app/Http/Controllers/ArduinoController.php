@@ -44,15 +44,11 @@ class ArduinoController extends Controller
      */
     protected function toggleLight()
     {
-        // Simulation of toggling the light based on some logic
-        $latestData = Aquarium::latest()->first();
-        if ($latestData && $latestData->light_level <= 100) {
-            $latestData->light_level = 0;
-        } else {
-            $latestData->light_level = 100;
+        $latestData = Aquaria::latest()->first();
+        if ($latestData) {
+            return $latestData->light_level <= 100 ? 100 : 0;
         }
-        $latestData->save();
-        return $latestData->light_level;
+        return null;
     }
 
     /**
