@@ -23,7 +23,7 @@ Route::post('/data-send', [DataController::class, 'postData']);
 //});
 
 Route::get('/arduino-control/{action}', [ArduinoController::class, 'handleRequest'])
-    ->where('action', '^(toggleLight|dropPHTablet|dropFood|togglePump)$');
+        ->where('action', '^(toggleLight|dropPHTablet|dropFood|togglePump)$');
 
 
 

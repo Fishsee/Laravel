@@ -8,14 +8,14 @@ class AddPumpStateToAquariumTable extends Migration
 {
     public function up()
     {
-        Schema::table('aquarium', function (Blueprint $table) {
+        Schema::table('aquaria', function (Blueprint $table) {
             $table->boolean('pump_state')->default(false);
         });
     }
 
     public function down()
     {
-        Schema::table('aquarium', function (Blueprint $table) {
+        Schema::table('aquaria', function (Blueprint $table) {
             $table->dropColumn('pump_state');
         });
     }
