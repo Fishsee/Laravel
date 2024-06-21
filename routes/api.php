@@ -22,7 +22,7 @@ Route::post('/data-send', [DataController::class, 'postData']);
 //
 //});
 
-Route::get('/toggle-light', [ArduinoController::class, 'toggleLight']);
+Route::get('/arduino-control', [ArduinoController::class, 'toggleLight']);
 
 
 Route::get('/predict', function () {
