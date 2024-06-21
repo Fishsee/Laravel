@@ -18,17 +18,26 @@ class ArduinoController extends Controller
 
         if ($latestData) {
             if ($latestData->light_level <= 100) {
-                // Logic to set brightness to 100
                 return response()->json(['brightness' => 100]);
             } else {
-                // Logic to set brightness to 0
                 return response()->json(['brightness' => 0]);
             }
         } else {
             return response()->json([
                 'success' => false,
                 'message' => 'No data available.'
-            ], Response::HTTP_NOT_FOUND);  // HTTP 404
+            ], Response::HTTP_NOT_FOUND);
         }
     }
+
+    public function dropPHTablet(){
+        return response()->json(['pH' => 'ph']);
+
+    }
+
+    public function dropFood(){
+        return response()->json(['food' => 'food']);
+
+    }
+
 }
