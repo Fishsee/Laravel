@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AquariumDataController;
+use App\Http\Controllers\ArduinoController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\BrightnessController;
 
@@ -18,7 +19,11 @@ Route::post('/data-send', [DataController::class, 'postData']);
 // Temporary route for brightness testing for arduino2
 Route::get('/arduino-control', function () {
     return response()->json(['brightness' => 100, 'pH' => 'ph', 'food' => 'food', 'pump' => true]);
+
 });
+
+Route::get('/toggle-light', [ArduinoController::class, 'toggleLight']);
+
 
 Route::get('/predict', function () {
     // Predicted values
